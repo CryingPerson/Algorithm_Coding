@@ -3,24 +3,23 @@ class Solution {
     public int solution(int n, int[][] computers) {
         int answer = 0;
         
-        int[] visit = new int[n];
         Queue<Integer> q = new LinkedList();
+        int[] visited = new int[n];
         for(int i = 0; i<n; i++){
-            if(visit[i] == 1) continue;
-            answer++;
+            if(visited[i] == 1) continue;
             q.add(i);
+            answer++;
             while(!q.isEmpty()){
-                int pol = q.poll();
-                if(visit[pol] == 1) continue;
+                int poll = q.poll();
                 for(int j = 0; j<computers[i].length; j++){
-                    if(computers[pol][j] == 1){
+                    if(computers[poll][j] == 1 && visited[j] == 0){
                         q.add(j);
-                        visit[pol] = 1;
+                        visited[j] = 1;
                     }
                 }
             }
-
         }
+        
         return answer;
     }
 }
