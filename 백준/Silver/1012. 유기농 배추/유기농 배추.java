@@ -1,10 +1,11 @@
 
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
 class Main {
-    static int[] dx = {-1, 0, 1, 0}; // 각 n에 대한 [0 호출 횟수, 1 호출 횟수] 저장
+    static int[] dx = {-1, 0, 1, 0}; //
     static int[] dy = {0, 1, 0, -1};
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -24,7 +25,8 @@ class Main {
                 for (int p = 0; p < y; p++) {
                     if(board[s][p] == 1) {
                         cnt++;
-                        BFS(board,s,p,x,y);
+                        board[s][p] = 0;
+                        DFS(s,p,board,x,y);
                     }
                 }
             }
@@ -32,30 +34,15 @@ class Main {
         }
     }
 
-    public static void BFS(int[][]board, int x, int y, int mx, int my) {
-        Queue<point> queue  = new LinkedList<>();
-        queue.add(new point(x,y));
-        while (!queue.isEmpty()) {
-            point p = queue.poll();
+    public static void DFS(int n, int p, int[][] board, int mx, int my) {
+        for (int i = 0; i < 4; i++) {
+            int nx = dx[i] + n;
+            int ny = dy[i] + p;
 
-            for (int i = 0; i < 4; i++) {
-                int nx = p.x + dx[i];
-                int ny = p.y + dy[i];
-
-                if (nx >= 0 && nx < mx && ny >= 0 && ny < my && board[nx][ny] == 1) {
-                    queue.add(new point(nx,ny));
-                    board[nx][ny] = 0;
-                }
+            if (nx >= 0 && nx < mx && ny >= 0 && ny < my && board[nx][ny] == 1) {
+                board[nx][ny] = 0;
+                DFS(nx,ny,board,mx,my);
             }
         }
-    }
-}
-class point{
-    int x;
-    int y;
-
-    public point(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 }
