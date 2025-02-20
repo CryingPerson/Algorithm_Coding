@@ -1,5 +1,4 @@
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -7,38 +6,43 @@ public class Main {
     static int[] ch;
     static ArrayList<ArrayList<Integer>> list;
     static int m;
-    static int[] dis;
-    static int answer = 0;
+    static int n;
     static int[][] board;
-    static int white = 0;
-    static int blue = 0;
-    static int[] dx = {-1, 1};
+    static int[][] dis;
+    static int[] answer;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static int[][] ans;
+    static int zero = 0;
+    static int one = 0;
+    static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) {
 
         Scanner kb = new Scanner(System.in);
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>((o1,o2) -> {
+        n = kb.nextInt();
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) ->{
             if(Math.abs(o1) == Math.abs(o2)){
-                return o1-o2;
+                return o1 - o2;
             }else return Math.abs(o1) - Math.abs(o2);
-        });
-        int n = kb.nextInt();
+        }
+        );
+
         for (int i = 0; i < n; i++) {
-            int num = kb.nextInt();
-            if(num != 0){
-                pq.add(num);
-            }else{
-                if(pq.isEmpty()){
-                    System.out.println("0");
+            int command = kb.nextInt();
+
+            if(command == 0){
+                if(queue.isEmpty()){
+                    System.out.println(0);
                 }else{
-                    System.out.println(pq.poll());
+                    Integer poll = queue.poll();
+                    System.out.println(poll);
                 }
+            }else{
+                queue.add(command);
             }
         }
-
-
-
     }
 
 }
