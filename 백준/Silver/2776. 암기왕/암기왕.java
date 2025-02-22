@@ -1,33 +1,30 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-public class Main {
+class Main {
+    static int[][] board = new int[11][11]; // -5 ~ 5의 범위를 0 ~ 10으로 매핑
+    static int[] dx = {-1,0,1,0}; // U, D, L, R
+    static int[] dy = {0,1,0,-1}; // U, D, L, R
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int t = Integer.parseInt(br.readLine());
-
-        for(int a=0; a<t; a++){
-            Set<Integer> set = new HashSet<>();
+        int n = Integer.parseInt(br.readLine());
+        for(int i = 0; i < n; i++) {
             StringBuilder sb = new StringBuilder();
-            int n = Integer.parseInt(br.readLine());
-
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int i=0; i<n; i++)
-                set.add(Integer.parseInt(st.nextToken()));
-
+            Set<Integer> map = new HashSet<>();
             int m = Integer.parseInt(br.readLine());
-
-            st = new StringTokenizer(br.readLine());
-            for(int i=0; i<m; i++)
-                sb.append(set.contains(Integer.parseInt(st.nextToken()))? 1 : 0).append("\n");
-
+            StringTokenizer str = new StringTokenizer(br.readLine());
+            for(int j = 0; j < m; j++) {
+                int num = Integer.parseInt(str.nextToken());
+                map.add(num);
+            }
+            int k = Integer.parseInt(br.readLine());
+            str = new StringTokenizer(br.readLine());
+            for(int j = 0; j < k; j++) {
+                sb.append(map.contains(Integer.parseInt(str.nextToken())) ? 1 : 0).append('\n');
+            }
             System.out.print(sb);
         }
     }
