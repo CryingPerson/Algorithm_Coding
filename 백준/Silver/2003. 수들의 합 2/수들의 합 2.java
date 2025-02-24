@@ -22,7 +22,7 @@ public class Main {
 
         Scanner kb = new Scanner(System.in);
         int n = kb.nextInt();
-        long m = kb.nextInt();
+        int m = kb.nextInt();
 
         int[] arr = new int[n];
 
