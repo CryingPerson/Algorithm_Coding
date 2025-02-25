@@ -1,44 +1,44 @@
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.WeakHashMap;
 
 public class Main {
     static char[][] board;
+    static int white;
+    static int black;
     public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        sc.nextLine();
+        int n = sc.nextInt(); int m = sc.nextInt();
          board = new char[n][m];
-
+         sc.nextLine();
         for (int i = 0; i < n; i++) {
             board[i] = sc.nextLine().toCharArray();
         }
 
-        int ans = 0;
-        int min = Integer.MAX_VALUE;
+        int result = 999;
         for (int i = 0; i <= n - 8; i++) {
             for (int j = 0; j <= m - 8; j++) {
-                min =Math.min(brutoFoce(i,j) , min);
+                black = 0;
+                white = 0;
+                result = Math.min(visit(i,j), result);
             }
         }
-        System.out.println(min);
-
-        sc.close();
+        System.out.println(result);
     }
-    public static int brutoFoce(int i, int j) {
-        int w = 0;
-        int B = 0;
-        for (int a = i; a < i+8; a++) {
-            for(int b = j; b < j+8; b++) {
-                if((a+b) % 2 == 0){
-                    if(board[a][b] == 'W') B++; 
-                    if(board[a][b] == 'B') w++;
+    public static int visit(int x, int y){
+        for (int i = x; i < x + 8; i++) {
+            for (int j = y; j < y + 8; j++) {
+                if((i+j) % 2 ==0){
+                    if(board[i][j] == 'B') white++;
+                    if(board[i][j] == 'W') black++;
                 }else{
-                    if(board[a][b] == 'B') B++;
-                    if(board[a][b] == 'W') w++;
+                    if(board[i][j] == 'W') white++;
+                    if(board[i][j] == 'B') black++;
                 }
             }
         }
-        return Math.min(w, B);
+        return Math.min(white,black);
     }
 }
