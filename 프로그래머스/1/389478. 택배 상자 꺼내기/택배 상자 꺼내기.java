@@ -14,7 +14,7 @@ class Solution {
        
         for(int i = curHeigh; i<= maxH; i++){
             if(i % 2 != 0){
-                if((i+1) * w - curW - 1 < n){
+                if((i+1) * w - curW  <= n){
                     answer++;
                 }
             }else{
