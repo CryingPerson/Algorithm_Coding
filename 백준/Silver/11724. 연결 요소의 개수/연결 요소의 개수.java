@@ -1,41 +1,46 @@
+import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 
-class Main {
-    static int[] dx = {-1, 0, 1, 0}; //
-    static ArrayList<ArrayList<Integer>> list;
-    static int[] dy = {0, 1, 0, -1};
+public class Main {
+    static ArrayList<ArrayList<Integer>> list1;
+    static int n, m;
     static int[][] board;
-    static Queue<point> queue;
-    static int[]ch;
-
-
-    public static void main(String[] args) {
+    static int MaxSave = -1;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static int area = -1;
+    static int[] ch;
+    static int[] paraent;
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt(); int m = sc.nextInt();
-        list = new ArrayList<ArrayList<Integer>>();
+        list1 = new ArrayList<>();
+         int n = sc.nextInt();
+         int m = sc.nextInt();
+        ch = new int[n+1];
         for (int i = 0; i <= n; i++) {
-            list.add(new ArrayList<>());
+            list1.add(new ArrayList<>());
         }
         for (int i = 0; i < m; i++) {
             int a = sc.nextInt();
             int b = sc.nextInt();
-            list.get(a).add(b);
-            list.get(b).add(a);
+
+            list1.get(a).add(b);
+            list1.get(b).add(a);
         }
-        ch = new int[n+1];
-        int cnt= 0 ;
+        int ans = 0;
         for (int i = 1; i <= n; i++) {
             if(ch[i] == 0){
-                ch[i] = 1;
-                cnt++;
+                ans++;
                 DFS(i);
             }
         }
-        System.out.println(cnt);
+        System.out.println(ans);
     }
-    public static void DFS(int n){
 
-        for(int x : list.get(n)){
+    public static void DFS(int node) {
+        ch[node] = 1;
+        for (int x : list1.get(node)) {
             if(ch[x] == 0){
                 ch[x] = 1;
                 DFS(x);
@@ -44,12 +49,3 @@ class Main {
     }
 }
 
-class point {
-    int x;
-    int y;
-
-    public point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-}
