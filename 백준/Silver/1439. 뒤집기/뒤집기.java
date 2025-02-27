@@ -25,10 +25,6 @@ public class Main {
                 First = s.charAt(i);
             }
         }
-        if(cnt == 1){
-            System.out.println(1);
-            return;
-        }
         if(cnt % 2 != 0){
             System.out.println(cnt/2 + 1);
             return;
