@@ -17,7 +17,7 @@ public class Main {
         for (int i = 0; i < T; i++) {
              n = sc.nextInt();
             int[][] board = new int[n][n];
-            color = new int[n][n];
+            visited = new boolean[n][n];
             int a = sc.nextInt();
             int b = sc.nextInt();
 
@@ -37,7 +37,7 @@ public class Main {
             int size = queue.size();
             for (int i = 0; i < size; i++) {
                 Point poll = queue.poll();
-                color[poll.x][poll.y] = 1;
+                visited[poll.x][poll.y] = true;
                 if(poll.x == findX && poll.y == findY) return L;
 
                 for (int j = 0; j < 8; j++) {
@@ -45,8 +45,8 @@ public class Main {
                     int ny = poll.y + dy[j];
 
                     if(nx == findX && ny == findY) return L+1;
-                    if(nx >=0 && nx < n && ny >= 0 && ny < n && color[nx][ny] == 0){
-                        color[nx][ny] = 1;
+                    if(nx >=0 && nx < n && ny >= 0 && ny < n && !visited[nx][ny]){
+                        visited[nx][ny] = true;
                         queue.add(new Point(nx,ny));
                     }
                 }
