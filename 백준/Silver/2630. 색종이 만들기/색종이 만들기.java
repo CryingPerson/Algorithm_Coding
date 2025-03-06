@@ -1,43 +1,57 @@
-import java.util.Scanner;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+import java.util.*;
 
-public class Main {
-    static int[][] board;
-    static int blue = 0;
-    static int white = 0;
-    static int result = 0;
+class Main {
+    public static int row;
+    public static int[][] board;
+    public static int col;
+    public static int sum = 0;
+    public static int white = 0;
+    public static int blue = 0;
+    public static int[] dx = {-1, 0, 1, 0};
+    public static int[] dy = {0, 1, 0, -1};
+
+    public static ArrayList<ArrayList<Integer>> list;
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
+        Scanner kb = new Scanner(System.in);
 
-        board = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                board[i][j] = sc.nextInt();
+        int N = kb.nextInt();
+        board = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                board[i][j] = kb.nextInt();
             }
         }
-        DFS(0,0, n);
+
+        DFS(0, 0, N);
         System.out.println(white);
         System.out.println(blue);
     }
-    public static void DFS(int row, int col, int size) {
-        if(check(row,col,size)){
-            if(board[row][col] == 1) blue++;
-            else white++;
+
+    public static void DFS(int x, int y, int Len) {
+
+
+        if (check(x, y, Len)) {
+            if (board[x][y] == 0) white++;
+            else blue++;
             return;
         }
+        DFS(x, y + Len / 2, Len / 2); // 1사부면
+        DFS(x, y, Len/2);       //2
+        DFS(x + Len/2, y, Len/2);
+        DFS(x+Len/2, y+Len/2, Len/2);
 
-        int banSize = size/2;
-        DFS(row, col , banSize);
-        DFS(row, col + banSize, banSize);
-        DFS(row + banSize, col , banSize);
-        DFS(row + banSize, col + banSize, banSize);
     }
-    public static boolean check(int row, int col, int size) {
-        int a = board[row][col];
-        for(int i = row; i<row + size; i++){
-            for(int j = col; j<col + size; j++){
-                if(board[i][j] != a) return false;
+
+    public static boolean check(int x, int y, int Len) {
+        int num = board[x][y];
+
+        for (int i = x; i < x + Len; i++) {
+            for (int j = y; j < y + Len; j++) {
+                if (num != board[i][j]) return false;
             }
         }
         return true;
