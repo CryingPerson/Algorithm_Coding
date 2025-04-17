@@ -1,51 +1,39 @@
-
-import java.awt.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int INF = Integer.MAX_VALUE;
-    static int[] ch;
-    static ArrayList<ArrayList<Integer>> list;
-    static int m;
-    static int n;
-    static int[][] board;
-    static int[][] dis;
-    static int[] answer;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1};
-    static int[][] ans;
-    static int zero = 0;
-    static int[] arrs;
-    static int one = 0;
-    static StringBuilder sb = new StringBuilder();
+    static int N;
+    static int[] ans;
+    static char[][] board;
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        Scanner kb = new Scanner(System.in);
-        int n = kb.nextInt();
-        kb.nextLine();
+        int n = sc.nextInt();
 
+        sc.nextLine();
         int cnt = 0;
-        for (int i = 0; i < n; i++) {
-            String s = kb.nextLine();
-            if(check(s))cnt++;
+        for(int i = 0; i < n; i++) {
+            String s = sc.nextLine();
+            if(flag(s)){
+                cnt++;
+            }
         }
         System.out.println(cnt);
     }
+    public static boolean flag(String str){
 
-    public static boolean check(String s) {
-        char preChar = 0;
-        boolean[] word = new boolean[26];
-        for (int i = 0; i < s.length(); i++) {
-            char curChar = s.charAt(i);
-            if(curChar != preChar && word[curChar - 'a']){
+        boolean[] alpabet = new boolean[26];
+        alpabet[str.charAt(0) - 'a'] = true;
+        for(int i = 1; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if(alpabet[ch - 'a'] && ch != str.charAt(i-1)){
                 return false;
             }
-            word[curChar - 'a'] = true;
-            preChar = curChar;
-
+            alpabet[ch - 'a'] = true;
         }
         return true;
     }
 }
-
