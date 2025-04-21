@@ -44,10 +44,8 @@ public class Main {
                     for(int y = 0; y < 5; y++) {
                         if(board[x][y] == called){
                             r = x; c = y;
-                            break;
                         }
                     }
-                    if(r != -1) break;
                 }
 
                 making[r][c] = true;
@@ -59,7 +57,6 @@ public class Main {
                     for(int y = 0; y < 5; y++) {
                         if(!making[x][y]) {
                             full = false;
-                            break;
                         }
                     }
                     if(full) bingoLines++;
@@ -70,7 +67,6 @@ public class Main {
                     for(int y = 0; y < 5; y++) {
                         if(!making[y][x]) {
                             full = false;
-                            break;
                         }
                     }
                     if(full) bingoLines++;
