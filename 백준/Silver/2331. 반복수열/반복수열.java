@@ -12,12 +12,11 @@ public class Main {
 
         HashMap<Integer, Integer> map = new HashMap<>();
         map.put(n , 1);
-        int find = n;
         int ans = 0;
         for (int i = 0; i < 10000; i++) {
 
-            find = getNext(find, p);
-            map.put(find, map.getOrDefault(find, 0) + 1);
+            n = getNext(n, p);
+            map.put(n, map.getOrDefault(n, 0) + 1);
         }
         for (int val : map.values()) {
             if(val == 1) ans++;
