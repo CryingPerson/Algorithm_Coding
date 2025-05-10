@@ -1,56 +1,59 @@
-
-
+import java.io.*;
 import java.util.*;
 
-class Main {
-    static int[] dx = {-1, 0, 1, 0}; //
-    static  ArrayList<ArrayList<Integer>> list;
-    static int[] dy = {0, 1, 0, -1};
-    static int[][] board;
-    static int[][] dis;
-    static int[] ch;
-    static int max = Integer.MAX_VALUE;
-    public static void main(String[] args) {
+public class Main {
+    static char[][] arr;
+    static int[] dx = {-1, 0, 1, 0}; // 위, 오른, 아래, 왼 (x는 행)
+    static int[] dy = {0, 1, 0, -1}; // 위, 오른, 아래, 왼 (y는 열)
+    static int N, M;
+    static ArrayList<ArrayList<Integer>> list;
+    static boolean[] visited;
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+         N = sc.nextInt();
+         M = sc.nextInt();
+        arr = new char[N][M];
         sc.nextLine();
-        board = new int[n+1][m+1];
-        dis = new int[n+1][m+1];
-        for (int i = 1; i <= n; i++) {
-            String line = sc.nextLine(); // 한 줄을 입력받음
-            for (int j = 1; j <= m; j++) {
-                board[i][j] = line.charAt(j - 1) - '0'; // '1' -> 1, '0' -> 0 변환
+        for(int i = 0; i < N; i++) {
+            char[] charArray = sc.nextLine().toCharArray();
+            for(int j = 0; j < M; j++) {
+                arr[i][j] = charArray[j];
             }
         }
-        int answer = 1;
-        DFS(1,1,n,m,answer);
-        System.out.println(dis[n][m]+1);
+        int answer = BFS(0, 0);
+        System.out.println(answer);
     }
+    public static int BFS(int x, int y){
+        Queue<point> queue = new LinkedList<>();
+        queue.add(new point(x, y));
 
-    public static void DFS(int x, int y,int n, int m, int answer) {
-        Queue<point> q = new LinkedList<>();
-        q.add(new point(x,y));
-        board[x][y] = 1;
-        while (!q.isEmpty()){
-            point poll = q.poll();
-            for (int i = 0; i < 4; i++) {
-                int nx = poll.x + dx[i];
-                int ny = poll.y + dy[i];
-                if(nx >= 1 && nx <= n && ny >= 1 && ny <= m && board[nx][ny] == 1){
-                    board[nx][ny] = 0;
-                    q.add(new point(nx,ny));
-                    dis[nx][ny] = dis[poll.x][poll.y]+1;
+        int cnt = 1;
+        arr[x][y] = '0';
+        while (!queue.isEmpty()){
+            int size = queue.size();
+            for(int j = 0; j < size; j++){
+                point cur = queue.poll();
+
+                if(cur.x == N-1 && cur.y == M-1) return cnt;
+                for(int i = 0; i < 4; i++) {
+                    int nx = cur.x + dx[i];
+                    int ny = cur.y + dy[i];
+
+                    if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+                    if(arr[nx][ny] == '1'){
+                        arr[nx][ny] = '0';
+                        queue.add(new point(nx, ny));
+                    }
                 }
             }
+            cnt++;
         }
+        return cnt;
     }
 }
-class point{
-    int x;
-    int y;
-
+class point {
+    int x, y;
     public point(int x, int y) {
         this.x = x;
         this.y = y;
