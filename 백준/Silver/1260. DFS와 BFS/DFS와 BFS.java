@@ -1,57 +1,60 @@
 import java.io.*;
-import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-    static ArrayList<ArrayList<Integer>> list1;
+    static int[][] arr;
+    static int[] dx = {-1, 0, 1, 0}; // 위, 오른, 아래, 왼 (x는 행)
+    static int[] dy = {0, 1, 0, -1}; // 위, 오른, 아래, 왼 (y는 열)
+    static int N, targetX, targetY;
+    static ArrayList<ArrayList<Integer>> list;
+    static boolean[] visited;
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
-        ArrayList<int[]> list = new ArrayList<>();
-         list1 = new ArrayList<>();
-        int n = sc.nextInt(); int m =sc.nextInt(); int start = sc.nextInt();
-        int[] ch = new int[n+1];
-        int[] ch2 = new int[n+1];
-        ch[start] = 1;
-        ch2[start] = 1;
-        for (int i = 0; i <= n; i++) {
-            list1.add(new ArrayList<>());
-        }
-        for (int i = 0; i < m; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
 
-            list1.get(a).add(b);
-            list1.get(b).add(a);
+        list = new ArrayList<>();
+
+        int N = sc.nextInt(); int M = sc.nextInt(); int start = sc.nextInt();
+        visited = new boolean[N+1];
+        for (int i = 0; i <= N; i++) {
+            list.add(new ArrayList<>());
         }
-        for(ArrayList<Integer> list2 : list1){
+        for (int i = 0; i < M; i++) {
+            int a = sc.nextInt(); int b = sc.nextInt();
+            list.get(a).add(b);
+            list.get(b).add(a);
+        }
+        for(ArrayList<Integer> list2 : list) {
             Collections.sort(list2);
         }
-        DFS(start, ch);
+        DFS(start);
         System.out.println();
-        BFS(start, ch2);
+        visited = new boolean[N+1];
+        BFS(start);
     }
-
-    public static void DFS(int start, int[]ch) {
+    public static void DFS(int start){
         System.out.print(start + " ");
-        for(int x : list1.get(start)){
-            if(ch[x] == 0){
-                ch[x] = 1;
-                DFS(x, ch);
+        visited[start] = true;
+        for(int num : list.get(start)){
+            if(!visited[num]){
+                visited[num] = true;
+                DFS(num);
             }
         }
     }
-
-    public static void BFS(int start, int[] ch2) {
+    public static void BFS(int start){
         Queue<Integer> queue = new LinkedList<>();
         queue.add(start);
-        ch2[start] = 1;
+        visited[start] = true;
         while (!queue.isEmpty()){
-            Integer poll = queue.poll();
-            System.out.print(poll + " ");
-            for(int x : list1.get(poll)){
-                if(ch2[x] == 0){
-                    ch2[x] = 1;
-                    queue.add(x);
+            int num = queue.size();
+            for(int i = 0; i < num; i++){
+                int cur = queue.poll();
+                System.out.print(cur + " ");
+                for(int num2 : list.get(cur)){
+                    if(!visited[num2]){
+                        visited[num2] = true;
+                        queue.add(num2);
+                    }
                 }
             }
         }
