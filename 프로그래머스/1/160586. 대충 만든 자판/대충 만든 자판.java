@@ -11,12 +11,9 @@ class Solution {
                 char ch =  targets[i].charAt(j);
                     int max = Integer.MAX_VALUE;
                 for(int k = 0; k < keymap.length; k++){
-                    int se = keymap[k].length() + 1;
-                    
                     for(int q = 0; q < keymap[k].length(); q++){
                         if(ch == keymap[k].charAt(q)){
                             max = Math.min(max, q+1);
-                            se = q + 1;
                             break;
                         }
                     }
