@@ -1,20 +1,23 @@
-import java.util.*;
 class Solution {
     public int[] solution(int brown, int yellow) {
         int[] answer = {};
         
         int sum = brown + yellow;
-
         
-        for(int h = 1; h<=sum; h++){
-            if(sum % h == 0){
-                int w = sum/h;
+        int sero = 0;
+        int garo = 0;
+        
+        for(int i = 1; i <= sum; i++){
+            if(sum % i == 0){
+                sero = sum / i;
                 
-                if(w >= h){
-                    if((w-2) * (h-2) == yellow) return new int[]{w,h};
+                if(sero <= i){
+                    if((i - 2) * (sero -2) == yellow){
+                        return new int[]{i, sero};
+                    }
                 }
             }
         }
-       return new int[]{1,1}; 
+        return answer;
     }
 }
