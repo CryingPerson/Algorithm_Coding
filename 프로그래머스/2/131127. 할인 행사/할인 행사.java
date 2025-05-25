@@ -7,10 +7,10 @@ class Solution {
         for(int i = 0; i < want.length; i++){
             food.put(want[i], number[i]);
         }
-        for(int i = 0; i <= discount.length - 10; i++){
+        for(int i = 0; i < discount.length; i++){
             HashMap<String, Integer> map = new HashMap();
             
-            for(int j = i; j < i + 10; j++){
+            for(int j = i; j < i + 10 && i + 10 <= discount.length; j++){
                 map.put(discount[j], map.getOrDefault(discount[j], 0) + 1);
             }
             
