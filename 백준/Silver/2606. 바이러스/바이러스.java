@@ -1,55 +1,39 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
-    static int INF = Integer.MAX_VALUE;
-    static int[] ch;
-    static ArrayList<ArrayList<Integer>> list;
-    static int m;
-    static int[] dis;
-    static int answer = 0;
-    static int[] dx = {-1, 1};
-
+    static int max = 0;
+    static boolean[] check;
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        Scanner kb = new Scanner(System.in);
+        int N = sc.nextInt();
 
-        int n = kb.nextInt();
-        int m = kb.nextInt();
-        ch = new int[n+1];
-        list = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        check = new boolean[N+1];
+        int m = sc.nextInt();
+        for (int i = 0; i <= N; i++) {
             list.add(new ArrayList<>());
         }
+
         for (int i = 0; i < m; i++) {
-            int a = kb.nextInt();
-            int b = kb.nextInt();
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+
             list.get(a).add(b);
             list.get(b).add(a);
-
         }
-        BFS(1);
-        System.out.println(answer);
+
+        DFS(list, 1);
+        System.out.println(max);
     }
-    public static void BFS(int n) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(n);
-        ch[n] = 1;
-
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                int poll = queue.poll();
-
-                for (int nx : list.get(poll)) {
-                    if(ch[nx] == 0){
-                        ch[nx] = 1;
-                        answer++;
-                        queue.add(nx);
-                    }
-                }
+    public static void DFS(ArrayList<ArrayList<Integer>> list, int start) {
+        check[start] = true;
+        for(int num : list.get(start)) {
+            if(!check[num]){
+                check[num] = true;
+                max++;
+                DFS(list, num);
             }
         }
     }
 }
-
