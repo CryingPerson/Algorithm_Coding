@@ -1,29 +1,27 @@
-import java.util.*;
 class Solution {
+    static int ans = 0;
+    static boolean[] chek;
     public int solution(int[] nums) {
         int answer = 0;
+        chek = new boolean[nums.length];
+        DFS(nums, 0, 0, 0);
 
-        int sum = 0;
-        HashSet<Integer> set = new HashSet();
-        for(int i = 0; i<nums.length; i++){
-            for(int j = i+1; j<nums.length; j++){
-                for(int k = j+1; k<nums.length; k++){
-                     sum = nums[i] + nums[j] + nums[k];
-                    if(check(sum)){
-                        answer++;
-                    }
-                }
+        return ans;
+    }
+    static void DFS(int[] nums, int L, int sum, int start){
+        if(L == 3){
+            System.out.println(sum);
+            if(isPrime(sum)) ans++;
+            return;
+        }
+        for(int i = start; i < nums.length; i++){
+                DFS(nums, L+1, sum + nums[i], i+1);
             }
         }
-
-        return answer;
-    }
-    public static boolean check(int n){
-        if(n == 1) return false;
-        if(n == 2) return true;
-        
-        for(int i = 2; i<n; i++){
-            if(n % i == 0) return false;
+    static boolean isPrime(int num){
+        if(num < 2) return false;
+        for(int i = 2; i <= Math.sqrt(num); i++){
+            if(num % i == 0) return false;
         }
         return true;
     }
