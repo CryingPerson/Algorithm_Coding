@@ -1,44 +1,45 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    static int[][] board;
-
-    static int result = 0;
+    static int[] arr;
+    static int[] ans;
+    static boolean[] check;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        int N = sc.nextInt(); int M = sc.nextInt();
 
-        int[] arr = new int[n];
-        int maxHeight = 0;
-        for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
-            maxHeight = Math.max(arr[i], maxHeight);
+        int[] arr = new int[N];
+        int max = 0;
+        for (int i = 0; i < N; i++) {
+            int heigh = sc.nextInt();
+
+            arr[i] = heigh;
+            max = Math.max(heigh, max);
         }
 
         int left = 0;
-        int right = maxHeight;
+        int right = max;
 
-
-
-        while (left <= right){
+        long temp = 0;
+        int ans = 0;
+        while (left <= right) {
+            temp = 0;
             int mid = (left + right)/2;
-            long tmep = 0;
-            for(int x : arr){
-                if(x > mid){
-                    tmep += x - mid;
+
+            for (int x : arr) {
+                if(mid < x){
+                    temp += x - mid;
                 }
             }
 
-            if(tmep >= m){
-                result = mid;
+            if (temp >= M) {
+                ans = mid;
                 left = mid + 1;
             }else{
                 right = mid - 1;
             }
         }
-        System.out.println(result);
+        System.out.println(ans);
     }
 }
