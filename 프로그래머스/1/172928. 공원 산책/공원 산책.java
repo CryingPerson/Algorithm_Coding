@@ -1,46 +1,122 @@
 class Solution {
+    public static int[] dx = {-1,0 ,1 , 0};
+    public static int[] dy = {0, 1, 0, -1};
     public int[] solution(String[] park, String[] routes) {
-      
-        
-        int row = park.length;
-        int col = park[0].length();
-        
-        int x = 0;
-        int y = 0;
-        for(int i = 0; i<row; i++){
-            for(int j = 0; j < col; j++){
+        int[] answer = new int[2];
+
+        int startX = -1;
+        int startY = -1;
+
+        for(int i = 0; i < park.length; i++){
+            for(int j = 0; j < park[0].length(); j++){
                 if(park[i].charAt(j) == 'S'){
-                    x = i;
-                    y = j;
-                    break;
+                    startX = i;
+                    startY = j;
                 }
             }
         }
-        
+        int nxx = 0;
+        int nyy = 0;
         for(String s : routes){
-            String[] s2 = s.split(" ");
-            String move = s2[0];
-            int num = Integer.parseInt(s2[1]);
+            String[] move = s.split(" ");
+            String dir = move[0];
+            int count = Integer.parseInt(move[1]);
             boolean flag = true;
-            int nx = x;
-            int ny = y;
-            for(int i = 1; i<=num; i++){
-                if(move.equals("E")) ny++;
-                else if(move.equals("W")) ny--;
-                else if(move.equals("S")) nx++;
-                else if(move.equals("N")) nx--;
-                
-                if(nx < 0 || nx >= row || ny < 0 || ny >= col || park[nx].charAt(ny) == 'X'){
-                    flag = false;
-                    break;
+            if(dir.equals("E")){
+                int tempX = startX;
+                int tempY = startY;
+                for(int i = 0; i < count; i++){
+                    nxx = tempX + dx[1];
+                    nyy = tempY + dy[1];
+                    if(nxx < 0 || nxx >= park.length || nyy < 0 || nyy >= park[0].length()){
+                        flag = false;
+                        break;
+                    }
+                    if(nxx >= 0 && nxx < park.length && nyy >= 0 && nyy < park[0].length()
+                            && park[nxx].charAt(nyy) == 'X'){
+                        flag = false;
+                        break;
+                    }
+                    tempX = nxx;
+                    tempY = nyy;
+                }
+                if(flag){
+                    startX = nxx;
+                    startY = nyy;
+                }
+            }else if(dir.equals("W")){
+                int tempX = startX;
+                int tempY = startY;
+                for(int i = 0; i < count; i++){
+                    nxx = tempX + dx[3];
+                    nyy = tempY + dy[3];
+                    if(nxx < 0 || nxx >= park.length || nyy < 0 || nyy >= park[0].length()){
+                        flag = false;
+                        break;
+                    }
+                    if(nxx >= 0 && nxx < park.length && nyy >= 0 && nyy < park[0].length()
+                            && park[nxx].charAt(nyy) == 'X'){
+                        flag = false;
+                        break;
+                    }
+                    tempX = nxx;
+                    tempY = nyy;
+
+                }
+                if(flag){
+                    startX = nxx;
+                    startY = nyy;
+                }
+            }else if(dir.equals("N")){
+                int tempX = startX;
+                int tempY = startY;
+                for(int i = 0; i < count; i++){
+                    nxx = tempX + dx[0];
+                    nyy = tempY + dy[0];
+                    if(nxx < 0 || nxx >= park.length || nyy < 0 || nyy >= park[0].length()){
+                        flag = false;
+                        break;
+                    }
+                    if(nxx >= 0 && nxx < park.length && nyy >= 0 && nyy < park[0].length()
+                            && park[nxx].charAt(nyy) == 'X'){
+                        flag = false;
+                        break;
+                    }
+                    tempX = nxx;
+                    tempY = nyy;
+                }
+                if(flag){
+                    startX = nxx;
+                    startY = nyy;
+                }
+            }else{
+                int tempX = startX;
+                int tempY = startY;
+                for(int i = 0; i < count; i++){
+
+                    nxx = tempX + dx[2];
+                    nyy = tempY + dy[2];
+                    if(nxx < 0 || nxx >= park.length || nyy < 0 || nyy >= park[0].length()){
+                        flag = false;
+                        break;
+                    }
+                    if(nxx >= 0 && nxx < park.length && nyy >= 0 && nyy < park[0].length()
+                            && park[nxx].charAt(nyy) == 'X'){
+                        flag = false;
+                        break;
+                    }
+                    tempX = nxx;
+                    tempY = nyy;
+                }
+                if(flag){
+                    startX = nxx;
+                    startY = nyy;
                 }
             }
-            if(flag){
-                x = nx;
-                y = ny;
-            }
-            
         }
-        return new int[]{x,y};
+        answer[0] = startX;
+        answer[1] = startY;
+
+        return answer;
     }
 }
