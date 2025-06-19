@@ -1,23 +1,21 @@
 class Solution {
+    static int max = -1;
     static boolean[][] visited;
-    static int maxLen = -1;
     public int solution(int k, int[][] dungeons) {
-        int answer = 0;
+        int answer = -1;
+        visited = new boolean [dungeons.length][dungeons[0].length];
         
-        visited = new boolean[dungeons.length][dungeons[0].length];
-        DFS(k, 0, dungeons);
-        return maxLen;
+        DFS(k, dungeons, 0);
+        return max;
     }
-    public static void DFS(int k, int cnt, int[][] dungeons){
-        maxLen = Math.max(cnt, maxLen);
-        System.out.println(cnt);
-        for(int i = 0; i < dungeons.length; i++){
-            int require = dungeons[i][0];
-            int use = dungeons[i][1];
-            
-            if(k >= require && !visited[i][0]){
+    static void DFS(int k, int[][] answer, int depth){
+        max = Math.max(max, depth);
+        for(int i = 0; i < answer.length; i++){
+            int cur = answer[i][0];
+            int use = answer[i][1];
+            if(!visited[i][0] && k >= cur){
                 visited[i][0] = true;
-                DFS(k - use, cnt + 1, dungeons);
+                DFS(k - use, answer ,depth + 1);
                 visited[i][0] = false;
             }
         }
