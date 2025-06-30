@@ -1,19 +1,18 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
-        int[] answer = {};
+        int[] answer = new int[2];
         
-        int size = brown + yellow;
+        int sum = brown + yellow;
         
-        for(int i = 1; i <= brown; i++){
-            if(size % i == 0){
-                         int h = size / i;
-            if(i < h) continue;
+        for(int i = 1; i <= sum; i++){
+            int hight = sum / i;
             
-            if((i - 2) * (h - 2) == yellow){
-                return new int[]{i, h};
-            }   
+            if(i < hight) continue;
+            
+            if((i - 2) * (hight - 2) == yellow){
+                answer[0] = i;
+                answer[1] = hight;
             }
-            
         }
         return answer;
     }
