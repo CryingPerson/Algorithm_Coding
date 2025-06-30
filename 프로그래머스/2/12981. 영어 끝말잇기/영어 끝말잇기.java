@@ -1,35 +1,31 @@
 import java.util.*;
 class Solution {
+    static Set<String> set = new HashSet();
     public int[] solution(int n, String[] words) {
         int[] answer = new int[2];
 
-        List<String> list = new ArrayList();
-        
-        list.add(words[0]);
+        String first = words[0];
         for(int i = 1; i < words.length; i++){
-            if(list.contains(words[i])){
-                int a = i % n + 1;
-                int b = i / n + 1;
+            set.add(first);
+            if(check(first, words[i])){
+                set.add(first);
+                int place = i % n + 1;
+                int place2 = i / n + 1;   
                 
-                return new int[] {a,b};
+                answer[0] = place;
+                answer[1] = place2;
+                return answer;
             }
-            if(same(words[i - 1], words[i])){
-                int a = i % n + 1;
-                int b = i / n + 1;
-                
-                return new int[] {a,b};
-            }
-            list.add(words[i]);
+            first = words[i];
         }
-
+        answer[0] = 0;
+        answer[1] = 0;
         return answer;
     }
-    static boolean same(String s, String s2){
-        char ch = s.charAt(s.length() - 1);
-        char cs = s2.charAt(0);
+    static boolean check(String s, String s2){
+        if(s.charAt(s.length() - 1) != s2.charAt(0)) return true;
+        if(set.contains(s2)) return true;
         
-        if(ch == cs) return false;
-        
-        return true;
+        return false;
     }
 }
