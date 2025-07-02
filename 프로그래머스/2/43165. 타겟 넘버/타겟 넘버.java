@@ -3,16 +3,15 @@ class Solution {
     public int solution(int[] numbers, int target) {
         int answer = 0;
         
-        DFS(0,0,numbers,target);
+        DFS(numbers, target, 0, 0);
         return cnt;
     }
-    
-    public void DFS(int L, int sum, int[] numbers, int num){
+    static void DFS(int[] numbers, int target, int L, int sum){
         if(L == numbers.length){
-            if(sum == num) cnt++;
-        }else{
-            DFS(L+1, sum + numbers[L],numbers, num);
-            DFS(L+1,sum - numbers[L],numbers, num); 
+            if(sum == target) cnt++;
+            return;
         }
+        DFS(numbers, target, L+1, sum + numbers[L]);
+        DFS(numbers, target, L+1, sum - numbers[L]);
     }
 }
