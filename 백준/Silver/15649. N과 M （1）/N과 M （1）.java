@@ -1,49 +1,36 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class Main {
-    static int[]arr;
-    static boolean[]visit;
-    static StringBuilder sb = new StringBuilder();
-    public static void main(String args[]) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+class Main {
+    static char[][] board;
+    static int[] dx = {-1, 0, 1, 0}; // U R D L
+    static int[] dy = {0, 1, 0, -1};
+    static int[] arr;
+    static boolean[] visited;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        StringTokenizer str = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(str.nextToken());
-        int M = Integer.parseInt(str.nextToken());
-
+        int N = sc.nextInt(); int M = sc.nextInt();
         arr = new int[M];
-        visit = new boolean[N];
-        dfs(N,M,0);
-        System.out.println(sb);
+        visited = new boolean[N];
+        DFS(N,M,0);
+
     }
-    static void dfs(int N, int M, int depth)
-    {
-        if(depth == M)
-        {
-            for(int val : arr)
-            {
-                sb.append(val).append(' ');
+    static void DFS(int n, int m, int depth){
+        if(depth == m){
+            for (int num : arr){
+                System.out.print(num + " ");
             }
-            sb.append('\n');
-        }
-        else
-        {
-            for(int i =0; i<N; i++)
-            {
-                if(!visit[i])
-                {
-                    visit[i] = true;
-                    arr[depth] = i + 1;
-                    dfs(N,M,depth + 1);
-                    visit[i] = false;
+            System.out.println();
+        }else{
+            for (int i = 1; i <= n; i++) {
+                if (!visited[i - 1]) {
+                    arr[depth] = i;
+                    visited[i-1] = true;
+                    DFS(n,m,depth + 1);
+                    visited[i-1] = false;
                 }
             }
         }
     }
-
 }
