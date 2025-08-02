@@ -21,6 +21,7 @@ public class Main {
         Map<Integer, Integer> times = new HashMap<>();
 
         List<Integer> cur = new ArrayList<>();
+        int idx = 0;
 
         // 맨처음 없으면 넣는다.
         // 있다면 그거는 그냥 추천수 +1
@@ -35,7 +36,7 @@ public class Main {
             if (students.containsKey(num)) {
                 students.put(num, students.get(num) + 1);
             }else{
-                if (cur.size() == n) {
+                if (idx == n) {
                     List<Integer> cadinates = new ArrayList<>();
 
                     int min = Integer.MAX_VALUE;
@@ -64,12 +65,12 @@ public class Main {
                             }
                         }
                     }
-                    cur.remove((Integer) deleteStudent);
+                    idx--;
                     students.remove(deleteStudent);
                     times.remove(deleteStudent);
                 }
                 students.put(num, 1);
-                cur.add(num);
+                idx++;
                 times.put(num, time);
             }
             time++;
