@@ -1,50 +1,42 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
+
         String line = sc.nextLine();
+        List<Integer> save = new ArrayList<>();
+        for (int i = 0; i < line.length(); i++) {
+            char ch = line.charAt(i);
 
-        int[] paramCount = new int[26]; // A~Z에 대해 파라미터 개수 저장
-        boolean[] visited = new boolean[26]; // 명령어 처음 등장 여부
-
-        int i = 0; // 문자열 인덱스
-        int memoryPos = 0; // 실제 메모리 위치
-        int nopCount = 0;
-
-        while (i < line.length()) {
-            char cmd = line.charAt(i); // 명령어 (대문자)
-
-            // 명령어는 무조건 대문자
-            int idx = cmd - 'A';
-
-            // 시작 위치가 4의 배수가 아니면 NOP 삽입
-            if (memoryPos % 4 != 0) {
-                int need = 4 - (memoryPos % 4);
-                nopCount += need;
-                memoryPos += need;
+            if(Character.isUpperCase(ch)){
+                save.add(i);
             }
-
-            // 파라미터 개수 계산
-            int param = 0;
-            int j = i + 1;
-            if (!visited[idx]) {
-                while (j < line.length() && Character.isLowerCase(line.charAt(j))) {
-                    param++;
-                    j++;
-                }
-                paramCount[idx] = param;
-                visited[idx] = true;
-            } else {
-                param = paramCount[idx];
-                j = i + 1 + param;
-            }
-
-            // 명령어 + 파라미터 처리
-            memoryPos += 1 + param;
-            i = j; // 다음 명령어로 이동
         }
 
-        System.out.println(nopCount);
+        int total = 0;
+        for (int i = 0; i < save.size() - 1; i++) {
+            int idx = save.get(i+1);
+            int first = save.get(i);
+
+            if((idx + total)% 4 == 0 && (first + total) % 4 ==0 ) continue;
+            int plus = -1;
+            int diff = idx - first;
+
+            if(diff <= 4){
+                total += 4 - (save.get(i+1) - save.get(i));
+            }else{
+                plus = diff / 4;
+                first = first + (4 * plus);
+
+                total += 4 - ((idx+plus) - first);
+                total += plus;
+            }
+        }
+        System.out.println(total);
     }
 }
