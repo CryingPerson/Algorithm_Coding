@@ -1,7 +1,1 @@
-import java.util.*;
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println(Integer.parseInt(new StringBuilder(Integer.toString(sc.nextInt(), 2)).reverse().toString(), 2));
-    }
-}
+import java.util.*;public class Main {public static void main(String[] args) {Scanner sc = new Scanner(System.in);System.out.println(Integer.parseInt(new StringBuilder(Integer.toString(sc.nextInt(), 2)).reverse().toString(), 2));}}
