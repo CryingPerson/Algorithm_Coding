@@ -1,49 +1,34 @@
 import java.util.*;
 class Solution {
-    
-    static boolean[] visited;
+    static int cnt = 0;
+    static boolean[] checked;
+    static Set<Integer> set;
     public int solution(String numbers) {
         int answer = 0;
-        HashSet<Integer> set = new HashSet();
-        String blanck = "";
-        visited = new boolean[numbers.length()];
-        
-        recusive(blanck, numbers, set);
-        for(Integer nums : set){
-            if(isPrime(nums)){
-                answer++;
+        set = new HashSet();
+        checked = new boolean[numbers.length()];
+        DFS(numbers,"");
+        return set.size();
+    }
+    static void DFS(String numbers,String word){
+        if(!word.equals("") && check(Integer.parseInt(word))) set.add(Integer.parseInt(word));
+        for(int i = 0; i < numbers.length(); i++){
+            if(!checked[i]){
+                checked[i] = true;
+             DFS(numbers, word + numbers.charAt(i));   
+                checked[i] = false;
             }
         }
-        
-        return answer;
     }
-   public boolean isPrime(int num) {
-        if (num == 0 || num == 1) {
-            return false;
-        }
+    static boolean check(int n){
+        if(n <= 1) return false;
         
-        int limit = (int) Math.sqrt(num);
+        if(n == 2) return true;
         
-        for (int i = 2; i <= limit; i++) {
-            if (num % i == 0) {
+        for(int i = 2; i*i <= n; i++)
+            if(n % i == 0) {
                 return false;
             }
-        }
-        
         return true;
-    }
-    public void recusive(String blanck,String numbers, HashSet<Integer> set){
-        if(!blanck.equals("")){
-            set.add(Integer.parseInt(blanck));
-        }
-        
-        for(int i = 0; i<numbers.length(); i++){
-            if(!visited[i]){
-                visited[i] = true; 
-                recusive(blanck + numbers.charAt(i),numbers, set);
-                visited[i] = false;
-            }
-        }
-        
     }
 }
