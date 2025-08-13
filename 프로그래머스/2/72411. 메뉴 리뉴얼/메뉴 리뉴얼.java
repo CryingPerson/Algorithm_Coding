@@ -14,11 +14,11 @@ class Solution {
             orders[i] = new String(arr);
         }
 
-        for (String order : orders) {
-            for (int len : course) {
-                if (order.length() >= len) {
-                    DFS(order, len, "", 0);
-                }
+        for (int num : course) {
+            String[] arr = new String[num];
+            for (String order : orders) {
+                DFS(order, num, orders, arr, 0, 0);
+                max = Integer.MIN_VALUE;
             }
         }
         List<String> list = new ArrayList();
@@ -47,12 +47,16 @@ class Solution {
         return list.toArray(String[]::new);
     }
 
-    static void DFS(String order, int len, String word, int start) {
-        if (word.length() == len) {
-           map.put(word, map.getOrDefault(word, 0) + 1);
+    static void DFS(String order, int len, String[] orders, String[] arr, int depth, int start) {
+        if (depth == len) {
+            int nums = check(arr, orders);
+            String s = "";
+            for (String ss : arr) s += ss;
+            map.put(s, nums);
         } else {
             for (int i = start; i < order.length(); i++) {
-                DFS(order, len, word + order.charAt(i), i+1);
+                arr[depth] = String.valueOf(order.charAt(i));
+                DFS(order, len, orders, arr, depth + 1,i + 1);
             }
         }
     }
