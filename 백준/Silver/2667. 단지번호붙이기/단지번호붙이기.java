@@ -1,69 +1,60 @@
-
-
+import java.io.*;
 import java.util.*;
 
 class Main {
-    static int[] dx = {-1, 0, 1, 0}; //
-    static ArrayList<ArrayList<Integer>> list;
+    static char[][] board;
+    static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    static int[][] board;
-    static int[][] dis;
-    static int[] ch;
-    static int cnt;
-    static int max = Integer.MAX_VALUE;
+    static int count = 0;
+    public static void main(String[] args) throws IOException {
 
-    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         int n = sc.nextInt();
+
+        board = new char[n][n];
+
         sc.nextLine();
-        board = new int[n + 1][n + 1];
-        dis = new int[n + 1][n + 1];
-        for (int i = 1; i <= n; i++) {
-            String line = sc.nextLine(); // 한 줄을 입력받음
-            for (int j = 1; j <= n; j++) {
-                board[i][j] = line.charAt(j - 1) - '0'; // '1' -> 1, '0' -> 0 변환
+        for (int i = 0; i < n; i++) {
+            String line = sc.nextLine();
+
+            for (int j = 0; j < n; j++) {
+                board[i][j] = line.charAt(j);
             }
         }
-        int answer = 0;
-        List<Integer> list1 = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= n; j++) {
-                if(board[i][j] == 1){
-                    answer++;
-                    cnt = 1;
-                    board[i][j] = 0;
-                    DFS(i,j, n, n);
-                    list1.add(cnt);
+        int cnt = 0;
+
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if(board[i][j] == '1'){
+                    DFS(i,j);
+                    cnt++;
+                    list.add(count);
+                    count = 0;
                 }
             }
         }
-        System.out.println(answer);
-        Collections.sort(list1);
-        for(int x : list1){
-            System.out.println(x);
-        }
+        System.out.println(cnt);
+        Collections.sort(list);
+
+        for(int x : list) System.out.println(x);
     }
 
-    public static void DFS(int x, int y, int n, int m) {
+    static void DFS(int x, int y) {
+        count++;
+        board[x][y] = '0';
+
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            if (nx >= 1 && nx <= n && ny >= 1 && ny <= m && board[nx][ny] == 1) {
-                cnt++;
-                board[nx][ny] = 0;
-                DFS(nx,ny,n,m);
+
+            if(nx < 0 || nx >= board.length || ny < 0 || ny >= board[0].length) continue;
+
+            if(board[nx][ny] == '1'){
+                DFS(nx,ny);
             }
         }
-    }
-}
 
-class point {
-    int x;
-    int y;
-
-    public point(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 }
