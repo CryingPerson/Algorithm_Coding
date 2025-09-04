@@ -4,44 +4,37 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int N = sc.nextInt();
+        int n = sc.nextInt();
 
 
-        int[] arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            List<Integer> list = new ArrayList<>();
+        int ab = -3;
+        int find = -1;
+        for (int i = 0; i < n; i++) {
+            int[] arr = new int[5];
             for (int j = 0; j < 5; j++) {
-                int x = sc.nextInt();
-                list.add(x);
+                arr[j] = sc.nextInt();
             }
-            int a = reserach(list);
-            arr[i] = a;
-        }
-        int max = -1;
-        int ans = 0;
-        for (int i = 0; i < arr.length; i++) {
-            max = Math.max(max, arr[i]);
-        }
-        for(int i = arr.length - 1; i >= 0; i--){
-            if(arr[i] == max){
-                System.out.println(i+1);
-                return;
-            }
-        }
-    }
-    public static int reserach(List<Integer> list) {
-        int max = -1;
-        for(int i = 0; i < list.size(); i++) {
-            for(int j = i+1; j < list.size(); j++) {
-                for(int k = j+1; k < 5; k++) {
-                    int sum = 0;
-                    sum += list.get(i) + list.get(j) + list.get(k);
-
-                    sum = sum % 10;
-                    max = Math.max(max, sum);
+            int max = -1;
+            for (int a = 0; a < 5; a++) {
+                for (int b = a + 1; b < 5; b++) {
+                    for (int c = b + 1; c < 5; c++) {
+                        int nn = get(arr[a] + arr[b] + arr[c]);
+                        max = Math.max(nn, max);
+                    }
                 }
             }
+            if(ab <= max){
+                ab = max;
+                find = i + 1;
+            }
         }
-        return max;
+        System.out.println(find);
+    }
+
+    static int get(int a) {
+        while (a >= 10) {
+            a %= 10;
+        }
+        return a;
     }
 }
