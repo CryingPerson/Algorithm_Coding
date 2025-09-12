@@ -1,40 +1,47 @@
 import java.util.*;
 
 public class Main {
-    static int N;
-    static char[][] graph;
-    static boolean[][] visited;
-    static int[][] result;
-    static int[] dx = {1, 0, -1, 0};
+    static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    static int L = 0;
+    static int[][] board;
+    static int n;
+    static int cc = 1;
+    static List<List<Integer>> list = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         String s = sc.nextLine();
 
-        int[] arr = new int[11];
+        int[] arr = new int[10];
+
         for (char ch : s.toCharArray()) {
-            if(ch =='6'){
-                arr['9' - '0']++;
-            }else{
-                arr[ch - '0']++;
-            }
+            int num = ch - '0';
+
+            if(num == 9 || num == 6){
+                arr[9]++;
+            }else arr[ch - '0']++;
         }
+
         int max = -1;
-        int compare = -1;
-        for (int i = 0; i <= 10; i++) {
-            if (i == 6 || i == 9) {
-                compare = (int)Math.ceil((double) arr[i] / 2);
-                if (compare > max) max = compare;
-            } else {
-
-                compare = arr[i];
-                if (compare > max) max = compare;
-
+        for (int i = 0; i < arr.length; i++) {
+            if(i == 9){
+                if (arr[i] % 2 != 0) {
+                    arr[i] = arr[i] / 2 + 1;
+                }else{
+                    arr[i] = arr[i] / 2;
+                }
+                if (arr[i] > max) {
+                    max = arr[i];
+                }
+            }else{
+                if(arr[i] > max){
+                    max = arr[i];
+                }
             }
+
         }
         System.out.println(max);
     }
+
 }
