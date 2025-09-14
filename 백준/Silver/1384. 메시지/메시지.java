@@ -1,87 +1,68 @@
 import java.util.*;
 
 public class Main {
-    static char[][] DNA = {{'A', 'C', 'A', 'G'}, {'C', 'G', 'T', 'A'},
-            {'A', 'T', 'C', 'G'}, {'G', 'A', 'G', 'T'}};
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, 1, 0, -1};
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         int idx = 1;
-        int aa = 1;
         while (true) {
             int n = sc.nextInt();
-            if (n == 0) break;
+
+            String[] names=  new String[n];
+            if(n == 0) break;
+
             sc.nextLine();
-            List<info> list = new LinkedList<>();
-            String[] name2 = new String[n];
 
-            List<another> temp = new LinkedList<>();
+            List<info> list = new ArrayList<>();
             for (int i = 0; i < n; i++) {
-                String name = sc.next();
-                name2[i] = name;
-                List<String> serach = new LinkedList<>();
+                String[] lines = sc.nextLine().split(" ");
+                names[i] = lines[0];
+                list.add(new info(lines[0]));
                 for (int j = 0; j < n - 1; j++) {
-                    String word = sc.next();
-                    serach.add(word);
+                    list.get(i).add(lines[j + 1]);
                 }
-                list.add(new info(name, serach, i));
             }
-            simulation(n, list, temp);
-            System.out.println("Group " + idx);
-            if (temp.isEmpty()) {
+
+            boolean ok = false;
+            System.out.println("Group " + idx++);
+            for (int a = 0; a < list.size(); a++) {
+                for (int j = 0; j < list.get(a).list.size(); j++) {
+                    if(list.get(a).list.get(j).equals("N")){
+                        ok = true;
+                        break;
+                    }
+                }
+            }
+            if(!ok){
                 System.out.println("Nobody was nasty");
-            } else {
-                for (another ss : temp) {
-                    System.out.print(name2[ss.reader] + " " + "was nasty about " + name2[ss.wirter]);
-                    System.out.println();
+                System.out.println();
+                continue;
+            }
+            for (int i = 0; i < list.size(); i++) {
+                info info = list.get(i);
+                for (int j = 0; j < info.list.size(); j++) {
+                    if (info.list.get(j).equals("N")) {
+                        System.out.print(names[(i + (names.length - (j + 1))) % n] + " ");
+                        System.out.println("was nasty about " + info.name);
+                    }
                 }
             }
-            list.clear();
             System.out.println();
-            idx++;
-            temp.clear();
         }
     }
-
-    static void simulation(int n, List<info> list, List<another> temp) {
-        int idx = 0;
-        int k = 0;
-        int save = 0;
-        for (info im : list) {
-            String name = im.name;
-            int iddxx = im.idx;
-            for (String s : im.save) {
-                if (s.equals("N")) {
-                    k = (iddxx - idx - 1 + n) % n;
-                    temp.add(new another(iddxx, k));
-                }
-                idx++;
-            }
-            idx = 0;
-        }
-
-    }
 }
-
-class another {
-    int wirter;
-    int reader;
-
-    public another(int wirter, int reader) {
-        this.wirter = wirter;
-        this.reader = reader;
-    }
-}
-
-class info {
+class info{
     String name;
-    List<String> save;
-    int idx;
+    List<String> list = new ArrayList<>();
 
-    public info(String name, List<String> list, int indx) {
+    public info(String name) {
         this.name = name;
-        this.save = list;
-        this.idx = indx;
+    }
+
+    public void add(String name) {
+        list.add(name);
     }
 }
