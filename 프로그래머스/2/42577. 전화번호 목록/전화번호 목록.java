@@ -2,15 +2,24 @@ import java.util.*;
 class Solution {
     public boolean solution(String[] phone_book) {
         boolean answer = true;
+        if(phone_book.length == 1){
+            return true;
+        }
+        Arrays.sort(phone_book);
         
-        HashMap<String, Integer> map = new HashMap();
-        
-        for(String s : phone_book) map.put(s, 1);
-        
-        for(int i = 0; i<phone_book.length; i++){
-            for(int j = 0; j<phone_book[i].length(); j++){
-                
-                if(map.containsKey(phone_book[i].substring(0,j))) return false;
+        for(int i = 0; i < phone_book.length - 1; i++){
+            boolean ok = false;
+            String a = phone_book[i];
+            String b = phone_book[i + 1];
+            
+            int len = Math.min(a.length(), b.length());
+            for(int j = 0; j < len; j++){
+                if(a.charAt(j) != b.charAt(j)){
+                    ok = true;
+                }
+            }
+            if(!ok){
+                return false;
             }
         }
         return true;
