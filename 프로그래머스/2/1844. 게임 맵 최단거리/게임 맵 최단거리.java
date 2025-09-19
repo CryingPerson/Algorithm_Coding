@@ -1,47 +1,46 @@
 import java.util.*;
 class Solution {
-    int[] dx = {-1,0,1,0};
-    int[] dy = {0,1,0,-1};
+    static int[] dx = {-1 , 0, 1 ,0};
+    static int[] dy = {0 ,1,0,-1};
+    static boolean[][] visited;
     public int solution(int[][] maps) {
-        int answer = 1;
-        int n = maps.length;    // 행 크기
-        int m = maps[0].length;
-        Queue<Point> q = new LinkedList();
-        q.add(new Point(0,0));
-        maps[0][0] = 0;
-        while(!q.isEmpty()){
-            int size = q.size();
-            for(int a = 0; a<size; a++){
-                 Point pos = q.poll();
-                if(pos.x == n-1 && pos.y == m-1) return answer;
-                for(int i =0; i<4; i++){
-                    int nx = pos.x + dx[i];
-                    int ny = pos.y + dy[i];
-                    if(nx >= 0 && nx < n && ny >= 0 && ny <m && maps[nx][ny] == 1){
-                        maps[nx][ny] = 0;
-                        q.add(new Point(nx, ny));
-                    }
-                }
-           
-            }
-                answer++;
-        }
-        boolean flag = true;
-        for(int i = 0; i<n; i++){
-            for(int j = 0; j<n; j++){
-                if(maps[i][j] == 1){
-                    flag = false;
-                }
-            }
-        }
-        if(!flag) return -1;
+        int answer = 0;
+        
+        visited = new boolean[maps.length][maps[0].length];
+        answer = BFS(maps, 0, 0);
         return answer;
     }
-}
-class Point{
-    int x,y;
-    Point(int x, int y){
-        this.x = x;
-        this.y = y;
+    static int BFS(int[][] board, int x, int y){
+        Queue<int[]> q = new LinkedList();
+        
+        visited[x][y] = true;
+        q.add(new int[]{x,y});
+        int L = 1;
+        
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                int[] pos = q.poll();
+                
+                if(pos[0] == board.length - 1 && pos[1] == board[0].length - 1){
+                    return L;
+                }
+                for(int k = 0; k < 4; k++){
+                    int nx = pos[0] + dx[k];
+                    int ny = pos[1] + dy[k];
+                    
+                    if(nx < 0 || ny < 0 || nx >= board.length || ny >= board[0].length) continue;
+                    if(board[nx][ny] == 0) continue;
+                    
+                    if(!visited[nx][ny]){
+                        visited[nx][ny] = true;
+                        q.add(new int[]{nx,ny});
+                    }
+                }
+            }
+            L++;
+        }
+        return -1;
+        
     }
 }
