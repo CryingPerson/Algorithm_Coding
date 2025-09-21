@@ -7,7 +7,7 @@ class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int x = sc.nextInt(); int y = sc.nextInt();
+        int x = sc.nextInt(); int c = sc.nextInt();
 
         int a = x;
         int b = x;
@@ -19,10 +19,12 @@ class Main {
         // 4 6
         // 3 8
 
-        for (int i = 0; i < y; i++) {
+        for (int i = 0; i < c; i++) {
             int X = sc.nextInt(); int Y = sc.nextInt();
 
             // 세로
+
+            if(a <= X || b <= Y) continue;
             int aa = a * Y;
 
             // 가로
