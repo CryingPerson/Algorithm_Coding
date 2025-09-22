@@ -1,46 +1,60 @@
 import java.util.*;
 
-public class Main {
-    static int[] dx = {-1, 0 , 1 , 0};
-    static int[] dy = {0 , 1, 0, -1};
+class Main {
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {1, 0, -1, 0};
+    static boolean[][] snake;
+    static int[][] board;
+    static char[][] star;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int a = sc.nextInt(); int b = sc.nextInt();
+        int N1 = sc.nextInt();
+        int N2 = sc.nextInt();
 
         sc.nextLine();
-        String s = sc.nextLine();
-        List<ant> list = new LinkedList<>();
-        for (int i = s.length() - 1; i >= 0; i--) list.add(new ant(s.charAt(i), 1, new LinkedList<>()));
+        char[] ants = new char[N1 + N2];
 
-        String ss = sc.nextLine();
-        for (int i = 0; i < ss.length(); i++) list.add(new ant(ss.charAt(i), -1, new LinkedList<>()));
+        List<info> list = new ArrayList<>();
+        String a = sc.nextLine();
+        int idx = 0;
+        for (int i = a.length() - 1; i >= 0; i--) {
+            list.add(new info(a.charAt(i), 1));
+        }
+        int aDir = 1;
+        int bDir = -1;
+        String b = sc.nextLine();
 
+        for (int i = 0; i < b.length(); i++) {
+            list.add(new info(b.charAt(i), -1));
+        }
+        int T = sc.nextInt();
 
-        int T =sc.nextInt();
+        if (T == 0) {
+            for (info name : list) {
+                System.out.print(name.name);
+            }
+            return;
+        }
+        // a l j c r u o
+        // a l c j r u o
 
+        // A B C D
+        // A C B D
+        // C A D B
+        //
+
+        // C B A D E F
+        // C B D A E F
+        // C D B E A F
         while (T > 0) {
-            int j = 0;
-            while (j < list.size() -1){
-                if (list.get(j).dir != list.get(j + 1).dir) {
-                    if(list.get(j).list.contains(list.get(j+1).name)){
-                        j++;
-                        continue;
-                    }
-                    if(list.get(j+1).list.contains(list.get(j).name)){
-                        j++;
-                        continue;
-                    }
-
-                    ant temp = list.get(j+1);
-                    list.get(j+1).list.add(list.get(j).name);
-                    list.get(j).list.add(list.get(j+1).name);
-
-                    list.set(j+1, list.get(j));
-                    list.set(j, temp);
-
-                    j += 2;
-                }else{
+            int k = 0;
+            for (int j = 0; j < list.size() - 1; j++) {
+                if (list.get(j).dir == 1 && list.get(j + 1).dir == -1) {
+                    info temp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, temp);
                     j++;
                 }
             }
@@ -48,20 +62,18 @@ public class Main {
 
             T--;
         }
-        for (ant li : list) {
-            System.out.print(li.name);
+        for (info name : list) {
+            System.out.print(name.name);
         }
-
-
     }
 }
-class ant{
+
+class info {
     char name;
     int dir;
-    List<Character> list;
-    public ant(char name, int dir, List<Character> list) {
+
+    public info(char name, int dir) {
         this.name = name;
         this.dir = dir;
-        this.list = list;
     }
 }
