@@ -16,6 +16,8 @@ class Main {
             int a = sc.nextInt(); int b = sc.nextInt();
             arr[a - 1]++; arr[b - 1]++;
         }
-        for(int x : arr) System.out.println(x);
+        StringBuilder sb = new StringBuilder();
+        for(int x : arr) sb.append(x).append("\n");
+        System.out.println(sb);
     }
 }
