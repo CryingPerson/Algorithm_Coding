@@ -1,106 +1,79 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.*;
 
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static int n;
-    static int[] ans;
-    static int[][] board;
-    static int[][] talk;
-    static Set<String> list = new HashSet<>();
 
-    static long[] save = new long[9000001];
+    static int[]arr;
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
 
         int n = sc.nextInt();
 
-        List<info> list1 = new ArrayList<>();
-        for(int i = 0; i < n; i++) {
-            int num = sc.nextInt();
-            int strike = sc.nextInt();
-            int ball = sc.nextInt();
+        List<Integer> result = new ArrayList<>();
 
-            list1.add(new info(num, strike, ball));
+
+        List<int[]> think = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int num = sc.nextInt(); int strike = sc.nextInt(); int ball = sc.nextInt();
+
+            think.add(new int[]{num, strike, ball});
         }
 
-        int sum = 0;
-        for (int i = 123; i <= 987; i++) {
+        for (int i = 100; i <= 999; i++) {
+            if(check(i)) continue;
+            if(String.valueOf(i).contains("0")) continue;
+            boolean ok = true;
+            for(int[] numbers : think){
+                int number = numbers[0];
+                int strike = numbers[1];
+                int balll = numbers[2];
 
-            if(!valid(i))continue;
+                if(check2(i, number, strike, balll)){
 
-            boolean flag = true;
-            for(info list : list1){
-                if(!compare(list, i)){
-                    flag = false;
+                }else{
+                    ok = false;
                     break;
                 }
             }
-            if(flag){
-                sum++;
-            }
 
+            if(ok) result.add(i);
         }
-        System.out.println(sum);
+        System.out.println(result.size());
     }
-    public static boolean compare(info info, int i) {
-        int one = info.num / 100;
-        int two = info.num / 10 % 10;
-        int three = info.num % 10;
 
-        int preOne = i / 100;
-        int preTwo = i / 10 % 10;
-        int preThree = i % 10;
+    static boolean check2(int predict, int nn, int sCount, int bCount) {
+        String a1 = String.valueOf(predict);
+        String a2 = String.valueOf(nn);
 
-        int str = 0;
-        int bal = 0;
+        int c1 = 0;
+        int b1 = 0;
 
-        if(one == preOne){
-            str++;
-        }else{
-            if(one == preTwo || one == preThree){
-                bal++;
+        for (int i = 0; i < a1.length(); i++) {
+            if(a1.charAt(i) == a2.charAt(i)) c1++;
+        }
+
+        for (int i = 0; i < a1.length(); i++) {
+            if(a1.charAt(i) != a2.charAt(i)){
+                if(a2.contains(String.valueOf(a1.charAt(i)))){
+                    b1++;
+                }
             }
         }
 
-        if(two == preTwo){
-            str++;
-        }else{
-            if(two == preOne || two == preThree){
-                bal++;
-            }
-        }
+        if(c1 == sCount && b1 == bCount) return true;
 
-        if(three == preThree){
-            str++;
-        }else{
-            if(three == preTwo || three == preOne){
-                bal++;
-            }
-        }
-
-        if(info.strike == str && info.ball == bal){
-            return true;
-        }
         return false;
-
     }
 
-    public static boolean valid(int n) {
-        int one = n / 100;
-        int two = n / 10 % 10;
-        int three = n % 10;
+    static boolean check(int num) {
+        String aa = String.valueOf(num);
 
-        return one != 0 && two != 0 && three != 0 && (one != two && two != three && three != one);
-    }
-}
-class info{
-    int num; int strike;int ball;
-    public info(int num, int strike, int ball) {
-        this.num = num;
-        this.strike = strike;
-        this.ball = ball;
+        if(aa.charAt(0) == aa.charAt(1) || aa.charAt(0) == aa.charAt(2) || aa.charAt(1) == aa.charAt(2)) return true;
+
+        return false;
     }
 }
