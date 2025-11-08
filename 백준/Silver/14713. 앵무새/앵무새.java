@@ -1,54 +1,59 @@
-import java.util.*;
+    import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public class Main {
+        static char[][] grid = new char[10][10];
 
-        int n = sc.nextInt();
+        public static void main(String[] args) {
+            Scanner sc = new Scanner(System.in);
+            int n = sc.nextInt();
 
-        sc.nextLine();
+            Queue<info> queue = new LinkedList<>();
+            sc.nextLine();
+            for (int i = 0; i < n; i++) {
 
-        Queue<String> queue = new LinkedList<>();
-        int cnt1 = 0;
-        int cnt2 = 0;
-        for (int i = 0; i < n; i++) {
-            String word = sc.nextLine();
-            queue.add(word);
-            for(char ch : word.toCharArray()){
-                if(Character.isAlphabetic(ch)){
-                    cnt1++;
+                info s = new info(i);
+
+                String ss = sc.nextLine();
+                for(String sss : ss.split(" "))
+                s.queue.add(sss);
+                queue.add(s);
+            }
+            String ans = sc.nextLine();
+
+            Queue<String> answer = new LinkedList<>();
+
+            for(String an : ans.split(" ")) answer.add(an);
+
+            while (!answer.isEmpty()) {
+                String poll = answer.poll();
+
+                boolean ok = true;
+                for (info ss : queue) {
+                    String peek = ss.queue.peek();
+                    if(!ss.queue.isEmpty() && peek.equals(poll)){
+                        ss.queue.poll();
+                        ok = false;
+                    }
+                }
+                if(ok){
+                    System.out.println("Impossible");
+                    return;
                 }
             }
-        }
-        String L = sc.nextLine();
-        for (char ch : L.toCharArray()) {
-            if(Character.isAlphabetic(ch)) cnt2++;
-        }
-
-        while (!queue.isEmpty()) {
-            Queue<String> queue1 = new LinkedList<>();
-            String poll = queue.poll();
-            String[] split = poll.split(" ");
-            for(String ws : split) queue1.add(ws);
-
-            for (String s : L.split(" ")) {
-                if(!queue1.isEmpty() && queue1.peek().equals(s)){
-                    queue1.poll();
+            for (info ss : queue) {
+                if (!ss.queue.isEmpty()) {
+                    System.out.println("Impossible");
+                    return;
                 }
             }
-            if(!queue1.isEmpty()) {
-                System.out.println("Impossible");
-                return;
-            }
-
-            if(cnt2 != cnt1) {
-                System.out.println("Impossible");
-                return;
-            }
+            System.out.println("Possible");
         }
-        System.out.println("Possible");
-
-
     }
+    class info{
+        int idx;
+        Queue<String> queue = new LinkedList<>();
 
-}
+        public info(int ind) {
+            this.idx = ind;
+        }
+    }
