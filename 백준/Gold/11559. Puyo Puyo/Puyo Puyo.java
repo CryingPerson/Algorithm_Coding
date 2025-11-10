@@ -1,102 +1,100 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static int min = Integer.MAX_VALUE;
-    static int max = Integer.MIN_VALUE;
+    static int x, y;
+    static List<int[]> possible;
     static char[][] board;
     static boolean[][] visited;
-    static List<int[]> union;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    public static void main(String[] args) {
+
+    public static void main(String args[]) throws Exception {
         Scanner sc = new Scanner(System.in);
 
         board = new char[12][6];
 
         for (int i = 0; i < 12; i++) {
-            String line = sc.nextLine();
-            for (int j = 0; j < 6; j++) {
-                board[i][j] = line.charAt(j);
-            }
+            board[i] = sc.nextLine().toCharArray();
         }
 
-        int count = 0;
+
+
+        int day = 0;
         while (true) {
-            boolean turn = true;
+            boolean end = true;
             visited = new boolean[12][6];
-            union = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
                 for (int j = 0; j < 6; j++) {
-                    if(!visited[i][j] && board[i][j] != '.'){
-                        List<int[]> bfs = BFS(i, j);
 
-                        if (bfs.size() >= 4) {
-                            for (int[] pos : bfs) {
+                    if (!visited[i][j] && board[i][j] != '.') {
+                        possible = new LinkedList<>();
+                        int cc = BFS(i, j);
+
+                        if (cc >= 4) {
+                            for (int[] pos : possible) {
                                 board[pos[0]][pos[1]] = '.';
                             }
-                            turn = false;
+                            end = false;
                         }
                     }
                 }
             }
-            if(turn) break;
+            if (end) break;
+            day++;
+            simul();
 
-            down();
-            count++;
         }
-        System.out.println(count);
-
+        System.out.println(day);
     }
 
-    static void down() {
-        for (int col = 0; col < 6; col++) {
-
-            Queue<Character> queue = new LinkedList<>();
-
-            for (int row = 11; row >= 0; row--) {
-                if (board[row][col] != '.') {
-                    queue.add(board[row][col]);
-                    board[row][col] = '.';
+    static void simul() {
+        Queue<Character> queue = new LinkedList<>();
+        for (int j = 0; j < 6; j++) {
+            for (int i = 11; i >= 0; i--) {
+                if(board[i][j] != '.'){
+                    queue.add(board[i][j]);
+                    board[i][j] = '.';
                 }
             }
 
-            int ro = 11;
-            while (!queue.isEmpty()) {
-                board[ro--][col] = queue.poll();
+            for (int i = 11; i >= 0; i--) {
+                if(board[i][j] == '.'){
+                    if(!queue.isEmpty()) board[i][j] = queue.poll();
+                }
             }
+            queue.clear();
         }
     }
 
-    static List<int[]> BFS(int x, int y) {
+    static int BFS(int x, int y) {
         visited[x][y] = true;
 
-        List<int[]> retu = new ArrayList<>();
-
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{x,y});
+
+        queue.add(new int[]{x, y});
+        possible.add(new int[]{x, y});
         int L = 1;
+        char cur = board[x][y];
         while (!queue.isEmpty()) {
-            int size = queue.size();
+            int[] poll = queue.poll();
 
+            for (int i = 0; i < 4; i++) {
+                int nx = poll[0] + dx[i];
+                int ny = poll[1] + dy[i];
 
-            for (int i = 0; i < size; i++) {
-                int[] poll = queue.poll();
-                retu.add(poll);
-                char color = board[poll[0]][poll[1]];
-
-                for (int j = 0; j < 4; j++) {
-                    int nx = poll[0] + dx[j];
-                    int ny = poll[1] + dy[j];
-
-                    if(nx < 0 || ny < 0 || nx >= 12 || ny >= 6) continue;
-
-                    if(!visited[nx][ny] && board[nx][ny] == color){
-                        visited[nx][ny] = true;
-                        queue.add(new int[]{nx,ny});
-                    }
+                if (nx < 0 || ny < 0 || nx >= 12 || ny >= 6) continue;
+                if (!visited[nx][ny] && board[nx][ny] == cur) {
+                    queue.add(new int[]{nx, ny});
+                    visited[nx][ny] = true;
+                    possible.add(new int[]{nx, ny});
+                    L++;
                 }
+
             }
         }
-        return retu;
+        return L;
     }
+
 }
