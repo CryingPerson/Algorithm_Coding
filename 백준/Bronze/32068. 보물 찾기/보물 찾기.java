@@ -9,20 +9,13 @@ public class Main {
         for (int i = 0; i < n; i++) {
             int L = sc.nextInt(); int R = sc.nextInt(); int S = sc.nextInt();
 
-            int curMove = S;
-            int count = 1;
+            int minLength = Math.min(Math.abs(S - L), Math.abs(S - R));
 
-            int plus = 1;
-            char op = '+';
-            while (curMove != L && curMove != R) {
-                if(op == '+'){
-                    curMove += plus;
-                }else curMove -= plus;
-                if(op == '-'){
-                    op = '+';
-                }else op = '-';
-                plus++;
-                count++;
+            int count = -1;
+            if (minLength == Math.abs(R - S)) {
+                count = minLength * 2;
+            }else{
+                count = minLength * 2 + 1;
             }
             System.out.println(count);
         }
