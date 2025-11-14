@@ -1,54 +1,40 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-class Main {
-    static char[] Adrian = {'A', 'B', 'C'};
-    static char[] Bruno = {'B', 'A', 'B', 'C'};
-    static char[] Goran = {'C', 'C', 'A', 'A', 'B', 'B'};
-
-    static int[] fibos;
-    public static void main(String[] args) throws IOException {
+public class Main {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         int n = sc.nextInt(); int k = sc.nextInt();
 
-        int[][] student = new int[6][2];
-
+        int[][] student = new int[7][2];
         for (int i = 0; i < n; i++) {
-            int soung = sc.nextInt(); int grade = sc.nextInt() - 1;
-            if (soung == 0) {
-                student[grade][soung]++;
-            }else student[grade][soung]++;
+            int sex = sc.nextInt(); int grade = sc.nextInt();
+
+            student[grade][sex]++;
         }
 
-        int count = 0;
+        int requierRoom = 0;
+        int sum = 0;
 
-        int cnt = 0;
-        for (int i = 0; i < 2; i++) {
-            cnt += student[i][0];
-            cnt += student[i][1];
-        }
-        count += cnt / k + cnt % k;
+        sum += student[1][0] + student[1][1] + student[2][1] + student[2][0];
 
-        int idx = 0;
-        for (int i = 2; i < 4; i++) {
-            cnt = 0;
-            for (int j = 0; j < 2; j++) {
-                cnt += student[i][j];
-            }
-            count += cnt / k;
-            count += cnt % k;
+        requierRoom += sum / k;
+        if(sum % k != 0) requierRoom++;
+
+
+        for (int i = 3; i <= 6; i += 2) {
+            int gril = 0;
+            int man = 0;
+
+            gril += student[i][0] + student[i + 1][0];
+            man += student[i][1] + student[i + 1][1];
+
+            requierRoom += gril/ k + man / k;
+            if(gril % k != 0) requierRoom++;
+            if(man % k != 0) requierRoom++;
+
         }
-        idx = 0;
-        for (int i = 4; i < 6; i++) {
-            cnt = 0;
-            for (int j = 0; j < 2; j++) {
-                cnt += student[i][j];
-            }
-            count += cnt / k + cnt % k;
-        }
-        System.out.println(count);
+        System.out.println(requierRoom);
     }
 }
