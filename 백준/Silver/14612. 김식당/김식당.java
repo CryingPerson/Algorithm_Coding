@@ -1,49 +1,58 @@
 import java.util.*;
 
 public class Main {
+    static int[] arr = new int[3];
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int N = sc.nextInt();
-        int M = sc.nextInt();
+        int n = sc.nextInt(); int m = sc.nextInt();
 
-        List<int[]> list = new LinkedList<>();
-
-        for (int i = 0; i < N; i++) {
+        List<int[]> list=  new LinkedList<>();
+        for (int i = 0; i < n; i++) {
             String cmd = sc.next();
+            if(cmd.equals("order")){
+                int tableNum = sc.nextInt();
+                int orderTime = sc.nextInt();
 
-            if (cmd.equals("order")) {
-                int table = sc.nextInt();
-                int time = sc.nextInt();
-
-                list.add(new int[]{table, time});
-
-            } else if (cmd.equals("sort")) {
-
-                list.sort((a, b) -> {
-                    if (a[1] == b[1]) return a[0] - b[0];
-                    return a[1] - b[1];
-                });
-
-            } else { 
-                int table = sc.nextInt();
+                list.add(new int[]{tableNum, orderTime});
+                for (int[] xx : list) {
+                    System.out.print(xx[0] + " ");
+                }
+                System.out.println();
+            }else if(cmd.equals("complete")){
+                int CompleNum = sc.nextInt();
 
                 for (int j = 0; j < list.size(); j++) {
-                    if (list.get(j)[0] == table) {
+                    if (list.get(j)[0] == CompleNum) {
                         list.remove(j);
                         break;
                     }
                 }
-            }
-
-            if (list.isEmpty()) {
-                System.out.println("sleep");
-            } else {
-                for (int[] it : list) {
-                    System.out.print(it[0] + " ");
+                if(list.size() == 0){
+                    System.out.println("sleep");
+                    continue;
+                }
+                for (int[] xx : list) {
+                    System.out.print(xx[0] + " ");
+                }
+                System.out.println();
+            }else{
+                list.sort(((o1, o2) -> {
+                    if(o1[1] == o2[1]){
+                        return o1[0] - o2[0];
+                    }
+                    return o1[1] - o2[1];
+                }));
+                if(list.size() == 0){
+                    System.out.println("sleep");
+                    continue;
+                }
+                for (int[] xx : list) {
+                    System.out.print(xx[0] + " ");
                 }
                 System.out.println();
             }
         }
+
     }
 }
