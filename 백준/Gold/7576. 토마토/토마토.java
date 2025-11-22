@@ -1,72 +1,82 @@
-
 import java.util.*;
+import java.util.function.DoubleConsumer;
 
-class Main {
-    static int[] dx = {-1, 0, 1, 0}; //
-    static ArrayList<ArrayList<Integer>> list;
+public class Main {
+    static int[] arr = new int[3];
+    static int x,y;
+    static int[][] tomato;
+    static boolean[][] visited;
+    static List<int[]> point = new LinkedList<>();
+    static int[] dx = {-1 , 0 , 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    static int[][] board;
-    static Queue<point> queue;
-
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt(); int m = sc.nextInt();
-        queue = new LinkedList<>();
-        board = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                board[i][j] = sc.nextInt();
-            }
-        }
-        int bfs = 0;
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (board[i][j] == 1) {
-                     queue.add(new point(i,j));
+
+        x = sc.nextInt(); y = sc.nextInt(); tomato = new int[y][x];
+
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                tomato[i][j] = sc.nextInt();
+                if(tomato[i][j] == 1){
+                    point.add(new int[]{i,j});
                 }
             }
         }
-         bfs = BFS(m,n);
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if(board[i][j] == 0){
+
+        int bfs = 0;
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                if(tomato[i][j] == 0){
+                    bfs = BFS();
+                }
+            }
+        }
+
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                if (tomato[i][j] == 0) {
                     System.out.println(-1);
                     return;
                 }
             }
         }
-        System.out.println(bfs-1);
+        System.out.println(bfs);
     }
-    public static int BFS(int n, int m) {
 
-        int L = 0;
-        while (!queue.isEmpty()){
-            int size = queue.size();
+    static int BFS() {
+        Queue<int[]> possbliePoint = new LinkedList<>();
+
+        for(int[] ss : point) possbliePoint.add(ss);
+
+        int count = 0;
+        while (!possbliePoint.isEmpty()) {
+            int size = possbliePoint.size();
+
+            int sibal = 0;
             for (int i = 0; i < size; i++) {
-                point poll = queue.poll();
+                int[] pos = possbliePoint.poll();
+
+                int cx = pos[0];
+                int cy = pos[1];
 
                 for (int j = 0; j < 4; j++) {
-                    int nx = poll.x + dx[j];
-                    int ny = poll.y + dy[j];
+                    int nx = dx[j] + cx;
+                    int ny = dy[j] + cy;
 
-                    if(nx >= 1 && nx <=n && ny >= 1 && ny <= m && board[nx][ny] == 0){
-                        board[nx][ny] = 1;
-                        queue.add(new point(nx,ny));
+                    if(nx < 0 || ny < 0 || nx >= tomato.length || ny >= tomato[0].length) continue;
+                    if(tomato[nx][ny] == -1) continue;
+
+                    if(tomato[nx][ny] == 0){
+                        tomato[nx][ny] = 1;
+                        possbliePoint.add(new int[]{nx,ny});
+                        sibal++;
                     }
                 }
+
             }
-            L++;
+            if(sibal == 0) return count;
+            count++;
         }
-        return L;
-    }
-}
-
-class point {
-    int x;
-    int y;
-
-    public point(int x, int y) {
-        this.x = x;
-        this.y = y;
+        return count;
     }
 }
