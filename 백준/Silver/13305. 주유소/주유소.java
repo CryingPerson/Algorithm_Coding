@@ -1,34 +1,42 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.util.function.DoubleConsumer;
 
-public class Main{
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine()); // 도시의 개수
+public class Main {
+    static int[] arr = new int[3];
+    static int x,y,z;
+    static int[][][] tomato;
+    static boolean[][] visited;
+    static List<int[]> point = new LinkedList<>();
+    static int[] dx = {-1 , 0 , 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        StringTokenizer st1 = new StringTokenizer(br.readLine());
-        StringTokenizer st2 = new StringTokenizer(br.readLine());
-        int[] distance = new int[n - 1]; // 도시 간의 거리
-        int[] oliPrice = new int[n - 1]; // 도시의 기름, 마지막 도시 기름 가격은 알 필요가 없기 때문에 저장하지 않는다.
-        for (int i = 0; i < distance.length; i++) {
-            distance[i] = Integer.parseInt(st1.nextToken());
-            oliPrice[i] = Integer.parseInt(st2.nextToken());
+        int n = sc.nextInt();
+        int[] carL = new int[n];
+        int[] dis = new int[n - 1];
+
+        for (int i = 0; i < n - 1; i++) {
+            dis[i] = sc.nextInt();
+        }
+        for (int i = 0; i < n; i++) {
+            carL[i] = sc.nextInt();
         }
 
-        // 오버플로우 발생으로 long 사용
-        int minPrice = oliPrice[0]; 
-        long result = minPrice * distance[0];
+        int min = 0;
+        long total = 0;
+        for (int i = 0; i < n; i++) {
+            if(i >= dis.length) continue;
+            total += (long) carL[i] * dis[i];
 
-        for (int i = 1; i < oliPrice.length; i++) {
-            if (minPrice > oliPrice[i]) { // 기름의 가격이 더 낮으면 최소 금액을 갱신한다.
-                minPrice = oliPrice[i];
+            while ((i + 1) < n && (i + 1) < dis.length && carL[i + 1] > carL[min]) {
+                total += (long) carL[min] * dis[i + 1];
+                i++;
             }
-            result+=(minPrice * distance[i]); // 거리 * 가격을 누적합 
+            min = i + 1;
         }
+        System.out.println(total);
 
-        System.out.println(result);
 
     }
 }
