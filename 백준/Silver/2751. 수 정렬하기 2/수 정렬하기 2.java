@@ -1,27 +1,37 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+class Main {
+    static String[][] board;
+    static int[][] origin;
+    static List<int[]> temp;
+    static boolean end = true;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
+    static int Size = 0;
+    static int n, m, d;
+    static List<int[]> removePoint;
+    static int max = -1;
+
+    static List<int[]> teacher;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static boolean[]visited;
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            list.add(sc.nextInt());
+        }
+
+        Collections.sort(list);
+
         StringBuilder sb = new StringBuilder();
-        boolean[]arr = new boolean[2000001];
-        for(int i =0; i<N; i++)
-        {
-            arr[Integer.parseInt(br.readLine()) + 1000000] =true;
-        }
-        for(int i=0; i<2000001; i++)
-        {
-            if(arr[i])
-            {
-                sb.append(i-1000000).append('\n');
-            }
-        }
+        for(int x : list) sb.append(x).append("\n");
+
         System.out.println(sb);
     }
 }
