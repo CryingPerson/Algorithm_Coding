@@ -39,7 +39,6 @@ class Main {
         int junPrice = jun * zusci[13];
 
         if(n != 0) junPrice += n;
-
         int sung = 0;
 
         boolean masu = true;
@@ -53,15 +52,22 @@ class Main {
 
             int four = zusci[i + 3];
             if (one < two && two < three) {
-                save += sung * four;
+                price += sung * four;
+                if(price == 0) continue;
+                save = price;
                 sung = 0;
             }else if(one > two && two > three){
-                sung += save / four;
-                save %= four;
+                if(save > four){
+                    sung += save / four;
+                    save %= four;
+                }
             }
         }
+        if(price == 0){
+            price += sung * zusci[13];
+            if(save != 0) price += save;
+        }
 
-        price += save + sung * zusci[13];
         if (junPrice > price) {
             System.out.println("BNP");
         } else if (junPrice < price) {
