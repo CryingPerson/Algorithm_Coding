@@ -1,36 +1,62 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.Stack;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+class Main {
+    static String[][] board;
+    static int[][] origin;
+    static List<int[]> temp;
+    static boolean end = true;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();	// 출력할 결과물 저장
-        Stack<Integer> stack = new Stack<>();
-        int N = Integer.parseInt(br.readLine());
+    static int Size = 0;
+    static int n, m, d;
+    static List<int[]> removePoint;
+    static int max = -1;
 
-        int start = 0;
-        while (N-- > 0)
-        {
-            int push = Integer.parseInt(br.readLine());
+    static List<int[]> teacher;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static boolean[]visited;
 
-            if(push>start) {
-                for (int i = start + 1; i <= push; i++) {
-                    stack.push(i);
-                    sb.append('+').append('\n');
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        Stack<Integer> st = new Stack<>();
+
+        StringBuilder sb = new StringBuilder();
+        int last = 1;
+        int temp = last;
+        for (int i = 0; i < n; i++) {
+            int num = sc.nextInt();
+
+            if (st.isEmpty()) {
+                st.push(last);
+                last++;
+                sb.append("+").append("\n");
+                while (st.peek() != num) {
+                    st.push(last);
+                    sb.append("+").append("\n");
+                    last++;
                 }
+            }
 
-                start = push;
+            if(!st.isEmpty() && st.peek() == num){
+                st.pop();
+                sb.append("-").append("\n");
+            }else{
+                while (st.peek() != num) {
+                    if(last > n) {
+                        System.out.println("NO");
+                        return;
+                    }
+                    st.push(last);
+                    sb.append("+").append("\n");
+                    last++;
+                }
+                st.pop();
+                sb.append("-").append("\n");
             }
-            else if(stack.peek() != push)
-            {
-                System.out.println("NO");
-                return;
-            }
-            stack.pop();
-            sb.append('-').append('\n');
         }
         System.out.println(sb);
     }
