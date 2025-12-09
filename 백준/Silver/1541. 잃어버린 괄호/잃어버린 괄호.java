@@ -1,45 +1,62 @@
-
-
+import java.sql.ClientInfoStatus;
 import java.util.*;
 
 class Main {
-    static int[] dx = {-1, 0, 1, 0}; //
-    static ArrayList<ArrayList<Integer>> list;
-    static int[] dy = {0, 1, 0, -1};
     static int[][] board;
-    static Queue<point> queue;
+    static int[][] origin;
+    static List<int[]> temp;
+    static boolean end = true;
+
+    static int Size = 0;
+    static int n, m, d;
+    static boolean[][] che;
+    static List<int[]> removePoint;
+    static int max = -1;
+
+    static List<int[]> teacher;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static boolean[] visited;
+
+    static List<int[]> start;
 
     public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
+
         String s = sc.next();
 
-        String[] pre = s.split("-");
+        String[] split = s.split("-");
 
-        String[] stt = pre[0].split("\\+");
-        int sum = 0;
-        for (int i = 0; i < stt.length; i++) {
-            sum += Integer.parseInt(stt[i]);
+        int answer = 0;
+
+
+        answer = check(split[0]);
+        for (int i = 1; i < split.length; i++) {
+            int aSum = check(split[i]);
+
+            answer -= aSum;
         }
 
-        int minus = 0;
-        for (int i = 1; i < pre.length; i++) {
-            minus = 0;
-            String[] st = pre[i].split("\\+");
-            for (int j = 0; j < st.length; j++) {
-                minus += Integer.parseInt(st[j]);
-            }
-            sum -= minus;
+        if (split.length == 1) {
+            answer = check(split[0]);
         }
-        System.out.println(sum);
+
+        System.out.println(answer);
+        // 55-40+30-20+30;
+
+
+
     }
-}
 
-class point {
-    int x;
-    int y;
+    static int check(String s) {
+        String[] split = s.split("\\+");
+        int sum = 0;
 
-    public point(int x, int y) {
-        this.x = x;
-        this.y = y;
+        for (String ss : split) {
+            sum += Integer.parseInt(ss);
+        }
+
+        return sum;
     }
 }
