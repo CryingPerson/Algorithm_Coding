@@ -1,39 +1,63 @@
 import java.util.*;
 
 class Main {
-    static int n;
-    static int[]ch;
-    static ArrayList<ArrayList<Integer>> list;
+    static int[][] board;
+    static int[][] origin;
+    static List<int[]> temp;
+    static boolean end = true;
 
-    public void DFS(int L) {
-        for(int x : list.get(L)) {
-            if(ch[x] == 0){
-                ch[x] = L;
-                DFS(x);
-            }
-        }
-    }
+    static int Size = 0;
+    static int n, m, d;
+    static boolean[][] che;
+    static List<int[]> removePoint;
+    static int max = -1;
+
+    static List<int[]> teacher;
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static boolean[] visited;
+
+    static List<int[]> start;
 
     public static void main(String[] args) {
-        Main T = new Main();
-        Scanner kb = new Scanner(System.in);
-        n = kb.nextInt();
-        list = new ArrayList<>();
-        for(int i = 0; i<=n; i++){
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        List<List<Integer>> list = new ArrayList<>();
+
+        for (int i = 0; i <= n; i++) {
             list.add(new ArrayList<>());
         }
-        for(int i =0; i<n-1; i++){
-            int a = kb.nextInt();
-            int b = kb.nextInt();
-            list.get(a).add(b);
-            list.get(b).add(a);
-        }
-        ch = new int[n+1];
-        ch[1] = 1;
-        T.DFS(1);
 
-        for(int i = 2; i<=n; i++){
-            System.out.println(ch[i]);
+        for (int i = 0; i < n - 1; i++) {
+            int to = sc.nextInt();
+            int from = sc.nextInt();
+
+            list.get(to).add(from);
+            list.get(from).add(to);
+
         }
+
+        int[] childs = new int[n + 1];
+        dfs(childs,1, list);
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 2; i <= n; i++) {
+            sb.append(childs[i]).append("\n");
+        }
+        System.out.println(sb);
+    }
+
+    static void dfs(int[] childs, int parent, List<List<Integer>> list) {
+
+        for(int chiled : list.get(parent)){
+            if (childs[chiled] == 0) {
+                childs[chiled] = parent;
+                dfs(childs, chiled, list);
+            }
+        }
+
     }
 }
