@@ -86,21 +86,23 @@ class Main {
 
             for (int i = 0; i < size; i++) {
                 int poll = queue.poll();
-                visited[poll] = true;
                 if(poll == m){
                     heu = Math.min(L, heu);
                 }
                 int back = poll - 1;
 
                 if(check(back)){
+                    visited[back] = true;
                     queue.add(back);
                 }
                 int front = poll + 1;
                 if(check(front)){
+                    visited[front] = true;
                     queue.add(front);
                 }
                 int move = poll * 2;
                 if(check(move)){
+                    visited[move] = true;
                     queue.add(move);
                 }
             }
