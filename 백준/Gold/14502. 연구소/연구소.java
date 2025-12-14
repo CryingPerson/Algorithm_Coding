@@ -1,99 +1,88 @@
-import java.io.*;
-import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
-    static ArrayList<ArrayList<Integer>> list1;
-    static int n, m;
-    static int[][] board;
-    static int MaxSave = -1;
+    static char[] arr = {'A', 'B', 'C', 'D'};
+    static int L = 2;
+
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    static int area = -1;
-
+     static int[][] board;
+     static int max = 0;
+     static List<int[]> list = new ArrayList<>();
+     static List<int[]> viruous = new ArrayList<>();
+     static int n, m;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
+
+        n = sc.nextInt(); m = sc.nextInt();
+
         board = new int[n][m];
+
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 board[i][j] = sc.nextInt();
+
+                if(board[i][j] == 2) viruous.add(new int[]{i,j});
+                if(board[i][j] == 0) list.add(new int[]{i,j});
             }
         }
 
-        DFS(0);
-        System.out.println(MaxSave);
+        bfs(0,new ArrayList<>());
+
+        System.out.println(max);
     }
 
-    public static void DFS(int count) {
-        if (count == 3) {
-            seach();
-            return;
+    static void bfs(int start, List<int[]> l) {
+        if (l.size() == 3) {
+            int[][] temp = new int[n][m];
+            for(int i = 0; i < n; i++) temp[i] = board[i].clone();
+            chceck(temp, l);
         }else{
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
-                    int num = board[i][j];
-                    if (num == 0) {
-                        board[i][j] = 1;
-                        DFS(count + 1);
-                        board[i][j] = 0;
-                    }
-                }
+            for (int i = start; i < list.size(); i++) {
+                l.add(list.get(i));
+                bfs(i + 1, l);
+                l.remove(l.size() - 1);
             }
         }
     }
-    public static void seach() {
-        Queue<Point> queue = new LinkedList<>();
-        int[][] birusCon = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                int num = board[i][j];
-                if (num == 2) {
-                    queue.add(new Point(i, j));
-                }
-            }
+
+    static void chceck(int[][] temp, List<int[]> ll) {
+        Queue<int[]> queue = new LinkedList<>();
+
+        boolean[][] visited = new boolean[n][m];
+        for (int[] pos : ll) {
+            temp[pos[0]][pos[1]] = 1;
         }
-        for (int i = 0; i < n; i++) {
-            birusCon[i] = board[i].clone();
-        }
+
+        for(int[] vi : viruous) queue.add(new int[]{vi[0],vi[1]});
+
         while (!queue.isEmpty()) {
-            Point poll = queue.poll();
+            int[] poll = queue.poll();
 
-            int x = poll.x;
-            int y = poll.y;
+            int cx = poll[0];
+            int cy = poll[1];
 
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
+            for (int j = 0; j < 4; j++) {
+                int nx = cx + dx[j];
+                int ny = cy + dy[j];
 
-                if(nx >= 0 && nx < n && ny >= 0 && ny < m && birusCon[nx][ny] == 0){
-                    birusCon[nx][ny] = 2;
-                    queue.add(new Point(nx,ny));
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+
+                if(!visited[nx][ny] && temp[nx][ny] == 0){
+                    visited[nx][ny] = true;
+                    temp[nx][ny] = 2;
+                    queue.add(new int[]{nx,ny});
                 }
             }
         }
 
-        int areaSave = 0;
+        int count = 0;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if(birusCon[i][j] == 0){
-                    areaSave++;
-                }
+                if(temp[i][j] == 0) count++;
             }
         }
-        MaxSave = Math.max(areaSave, MaxSave);
 
+        max = Math.max(max, count);
     }
 }
-
-class Point {
-    int x;
-    int y;
-
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
