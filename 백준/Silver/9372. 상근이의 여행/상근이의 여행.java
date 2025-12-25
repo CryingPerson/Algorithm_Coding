@@ -29,13 +29,11 @@ public class Main {
             }
 
             int min = Integer.MAX_VALUE;
-            boolean[] visited;
-            for (int j = 1; j <= N; j++) {
-                count = 0;
-                visited = new boolean[N+1];
-                tree(visited, j, list);
-                min = Math.min(min, count);
-            }
+            boolean[] visited = new boolean[N + 1];
+            count = 0;
+            tree(visited, 1, list);
+            min = Math.min(min, count);
+
             System.out.println(min);
         }
     }
