@@ -23,17 +23,22 @@ public class Main {
 
         for(int i = 0; i < n; i++) disable[i] = sc.nextInt();
 
-        int bfs = bfs(0);
+        int target = disable[disable.length - 1];
+        int bfs = bfs(0, target + 1);
 
         System.out.println(bfs);
     }
 
-    static int bfs(int start) {
-        Queue<Integer> queue = new LinkedList<>();
-        boolean[] visited = new boolean[250001];
+    static int bfs(int start, int target) {
+        Queue<Integer> queue = new ArrayDeque<>();
         queue.add(start);
-        visited[0] = true;
 
+        boolean[] disa = new boolean[250002];
+        boolean[] visited = new boolean[250002];
+
+        for (int i = 0; i < n; i++) {
+            disa[disable[i]] = true;
+        }
         int L = 0;
 
         while (!queue.isEmpty()) {
@@ -42,19 +47,11 @@ public class Main {
             for (int i = 0; i < size; i++) {
                 int poll = queue.poll();
 
-                if(poll > disable[disable.length - 1]) return L;
+                if(poll == target) return L;
                 for (int j = 0; j < 2; j++) {
                     int nx = poll + move[j];
-                    boolean possblie = true;
-                    for (int k = 0; k < n; k++){
-                        if(disable[k] == nx) {
-                            possblie = false;
-                            break;
-                        }
-                    }
-                    if(!possblie) continue;
+                    if(disa[nx]) continue;
                     if(visited[nx]) continue;
-
                     visited[nx] = true;
 
                     queue.add(nx);
