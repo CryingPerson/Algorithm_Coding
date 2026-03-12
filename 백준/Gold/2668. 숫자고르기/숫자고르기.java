@@ -38,7 +38,6 @@ public class Main {
         if (!visited[start]) {
             visited[start] = true;
             dfs(arr[start], target);
-            visited[start] = false;
         }
     }
 }
