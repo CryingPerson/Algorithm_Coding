@@ -27,6 +27,7 @@ public class Main {
 
         int cnt = 0;
         int[] temp = P.clone();
+        int[] first = P.clone();
         int max = 1000000;
         while (true) {
             if(check(temp)){
@@ -35,13 +36,15 @@ public class Main {
 
             int[] mix = mix(temp);
 
-            temp = mix.clone();
-            cnt++;
-
-            if(cnt > 500000){
+            boolean equals = Arrays.equals(mix, first);
+            
+            if(equals){
                 System.out.println(-1);
                 return;
             }
+            temp = mix.clone();
+            cnt++;
+
 
         }
 
